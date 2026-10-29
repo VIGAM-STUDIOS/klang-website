@@ -293,46 +293,85 @@
       });
     });
 
-    // 3 Main Feature Cards (Lift & staggered entrance)
-    gsap.from(".features-hero-grid .feature-card", {
+    // "See it in action": intro line, then the app window rises in with depth
+    gsap.from("#features .section-sub", {
       scrollTrigger: {
-        trigger: ".features-hero-grid",
-        start: "top 78%",
-      },
-      y: 50,
-      opacity: 0,
-      scale: 0.96,
-      stagger: 0.15,
-      duration: 0.75,
-      ease: "power2.out",
-    });
-
-    // Feature Card Icons playful spring
-    gsap.from(".features-hero-grid .feature-icon", {
-      scrollTrigger: {
-        trigger: ".features-hero-grid",
-        start: "top 78%",
-      },
-      scale: 0.5,
-      rotate: -15,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 0.6,
-      delay: 0.1,
-      ease: "back.out(2)",
-    });
-
-    // Flat secondary feature cards
-    gsap.from(".grid-gap-top .feature-card-flat", {
-      scrollTrigger: {
-        trigger: ".grid-gap-top",
+        trigger: "#features .section-head",
         start: "top 82%",
       },
-      y: 35,
+      y: 20,
       opacity: 0,
-      stagger: 0.12,
-      duration: 0.65,
+      duration: 0.6,
+      delay: 0.15,
       ease: "power2.out",
+    });
+
+    gsap.from(".app-shot", {
+      scrollTrigger: {
+        trigger: ".app-shot",
+        start: "top 85%",
+      },
+      y: 70,
+      opacity: 0,
+      scale: 0.94,
+      rotateX: 8,
+      transformPerspective: 1200,
+      duration: 1.1,
+      ease: "power3.out",
+    });
+
+    // Same cursor tilt as the hero demo, a little gentler for the bigger window
+    const appShot = document.querySelector(".app-shot");
+    if (appShot) {
+      let shotRect = null;
+      appShot.addEventListener("mouseenter", () => {
+        shotRect = appShot.getBoundingClientRect();
+      });
+      appShot.addEventListener("mousemove", (e) => {
+        if (!shotRect) shotRect = appShot.getBoundingClientRect();
+        gsap.to(appShot, {
+          rotateX: ((e.clientY - shotRect.top) / shotRect.height - 0.5) * -5,
+          rotateY: ((e.clientX - shotRect.left) / shotRect.width - 0.5) * 5,
+          transformPerspective: 1400,
+          duration: 0.3,
+          ease: "power1.out",
+        });
+      });
+      appShot.addEventListener("mouseleave", () => {
+        shotRect = null;
+        gsap.to(appShot, { rotateX: 0, rotateY: 0, duration: 0.8, ease: "power2.out" });
+      });
+    }
+
+    // Showcase rows: media slides in from its own side, copy follows (stacked on narrow
+    // screens, so everything rises instead; sideways motion there would widen the page)
+    const stacked = window.matchMedia("(max-width: 900px)").matches;
+    gsap.utils.toArray(".showcase-item").forEach((item, i) => {
+      const mediaOnLeft = i % 2 === 0;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: item,
+          start: "top 78%",
+        },
+        defaults: { ease: "power2.out" },
+      });
+      tl.from(item.querySelector(".showcase-media"), {
+        x: stacked ? 0 : mediaOnLeft ? -70 : 70,
+        y: stacked ? 40 : 0,
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.85,
+        ease: "power3.out",
+      }).from(
+        item.querySelectorAll(".showcase-kicker, .showcase-copy h3, .showcase-copy p"),
+        {
+          y: 24,
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.55,
+        },
+        "-=0.55"
+      );
     });
 
     // "How it works" steps (animate entire LI container so numbers NEVER disappear)

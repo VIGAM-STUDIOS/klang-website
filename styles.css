@@ -988,18 +988,6 @@ p {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
-.step-badge {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--surface-2);
-  color: var(--ink-3);
-  border: 1px solid var(--line);
-}
-
 .steps h3 {
   font-size: 20px;
   font-weight: 750;
@@ -1306,8 +1294,103 @@ p {
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ---------------------------------------------------------------- In action (real app captures) */
+/* The captures are of the dark app, so their frames stay dark in both site themes. */
+.app-shot,
+.showcase-media {
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b0e14;
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow);
+}
+.app-shot {
+  margin-bottom: 88px;
+}
+.app-shot-bar {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  background: #11141a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #80838d;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.app-shot-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.app-shot-dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #2a2e36;
+}
+.app-shot img,
+.showcase-media img,
+.showcase-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.showcase {
+  display: grid;
+  gap: 80px;
+}
+.showcase-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 52px;
+  align-items: center;
+}
+.showcase-item:nth-child(even) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+}
+.showcase-item:nth-child(even) .showcase-media {
+  order: 2;
+}
+.showcase-kicker {
+  font: 600 12px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--good);
+}
+.showcase-copy h3 {
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.2;
+  margin: 12px 0;
+}
+.showcase-copy p {
+  color: var(--ink-2);
+  margin: 0;
+}
+.showcase-copy .showcase-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
 /* ---------------------------------------------------------------- Responsive */
 @media (max-width: 900px) {
+  .showcase {
+    gap: 56px;
+  }
+  .showcase-item,
+  .showcase-item:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .showcase-item:nth-child(even) .showcase-media {
+    order: 0;
+  }
+  .app-shot {
+    margin-bottom: 56px;
+  }
   .features-hero-grid,
   .grid-3,
   .steps {

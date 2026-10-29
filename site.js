@@ -304,8 +304,40 @@
     });
   }
 
+  // ---------------------------------------------------------------------------
+  // "See it in action" loops: play only while on screen; no autoplay for reduced motion
+  // ---------------------------------------------------------------------------
+  function initShowcaseVideos() {
+    const videos = $$("video[data-loop]");
+    if (!videos.length) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      videos.forEach((v) => {
+        v.removeAttribute("autoplay");
+        v.pause();
+        v.controls = true;
+      });
+      return;
+    }
+    if (!("IntersectionObserver" in window)) return;
+    // The observer takes over from the autoplay attribute (kept for no-JS visitors).
+    videos.forEach((v) => {
+      v.autoplay = false;
+      v.pause();
+    });
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach(({ target, isIntersecting }) => {
+          if (isIntersecting) target.play().catch(() => {});
+          else target.pause();
+        }),
+      { threshold: 0.25 },
+    );
+    videos.forEach((v) => io.observe(v));
+  }
+
   applyConfig();
   initTheme();
   initDemo();
   initSignup();
+  initShowcaseVideos();
 })();

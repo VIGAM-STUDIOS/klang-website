@@ -26,12 +26,12 @@
         else if (matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.dataset.theme = "light";
       } catch (e) {}
     </script>
-    <link rel="stylesheet" href="styles.css?v=4" />
+    <link rel="stylesheet" href="styles.css?v=6" />
     <script src="config.js" defer></script>
-    <script src="site.js?v=4" defer></script>
+    <script src="site.js?v=5" defer></script>
     <script src="gsap.min.js" defer></script>
     <script src="ScrollTrigger.min.js" defer></script>
-    <script src="animations.js?v=4" defer></script>
+    <script src="animations.js?v=6" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -111,143 +111,99 @@
         </div>
       </section>
 
-      <!-- Features -->
+      <!-- Features: real captures of the app, made with tools/capture-assets -->
       <section class="section" id="features">
         <div class="wrap">
           <div class="section-head center">
-            <h2 class="section-title">Three ways to find a sound</h2>
-            <p class="section-sub">Describe what you hear in your head, say it out loud, or drop in a reference sample.</p>
+            <h2 class="section-title">See it in action</h2>
+            <p class="section-sub">Type it, say it, or point at a sound you like. Then drag the result straight into your project.</p>
           </div>
 
-          <!-- Top 3 Hero Cards -->
-          <div class="features-hero-grid">
-            <!-- 1. Describe it -->
-            <article class="feature-card">
-              <div class="card-top">
-                <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg></div>
-                <span class="feature-badge">Semantic AI</span>
+          <figure class="app-shot">
+            <div class="app-shot-bar" aria-hidden="true"><span class="app-shot-dots"><i></i><i></i><i></i></span>KLANG</div>
+            <img
+              src="media/klang-main-hero-1080p.png"
+              srcset="media/klang-main-hero-1080p.png 1920w, media/klang-main-hero-1440p.png 2560w"
+              sizes="(max-width: 1152px) calc(100vw - 32px), 1120px"
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+              alt="The KLANG app: results for “warm analog pad” with waveforms, key badges and match scores, the macro filter panel open, and a pad playing in the bottom player."
+            />
+          </figure>
+
+          <div class="showcase">
+            <article class="showcase-item">
+              <div class="showcase-media">
+                <video data-loop src="media/klang-text-search-loop.mp4" poster="media/klang-text-search-loop.jpg" width="1920" height="1080" autoplay loop muted playsinline preload="metadata" aria-label="Typing “warm analog sub bass” into KLANG while the results update live"></video>
               </div>
-              <h3>Describe it</h3>
-              <p>Search in plain words: <q>warm analog sub bass</q>, <q>bright metallic hat</q>, <q>ethereal shimmer pad</q>. An AI neural model trained on sounds and descriptions does the matching.</p>
-              
-              <!-- Interactive Visual Mockup -->
-              <div class="feature-mockup mockup-search">
-                <div class="mockup-bar">
-                  <svg viewBox="0 0 24 24" class="mockup-search-icon"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
-                  <span class="mockup-input">dusty lo-fi snare with vinyl crackle</span>
-                </div>
-                <div class="mockup-tags">
-                  <span class="tag tag-accent">96% match</span>
-                  <span class="tag">Vinyl</span>
-                  <span class="tag">Snare</span>
-                  <span class="tag">180 ms</span>
-                </div>
+              <div class="showcase-copy">
+                <span class="showcase-kicker">Describe it</span>
+                <h3>Type what you hear</h3>
+                <p>Results update as you type, ranked by how well the sound itself matches your words, not by its filename.</p>
               </div>
             </article>
 
-            <!-- 2. Say it -->
-            <article class="feature-card">
-              <div class="card-top">
-                <div class="feature-icon feature-icon-mic"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><path d="M12 19v3" /></svg></div>
-                <span class="feature-badge feature-badge-live">● Local Whisper</span>
+            <article class="showcase-item">
+              <div class="showcase-media">
+                <video data-loop src="media/klang-voice-search-loop.mp4" poster="media/klang-voice-search-loop.jpg" width="1920" height="1080" autoplay loop muted playsinline preload="metadata" aria-label="Clicking the microphone, saying “ethereal shimmer pad”, and getting the matching pad as the top result"></video>
               </div>
-              <h3>Say it</h3>
-              <p>Click the mic and describe the sound out loud. Your voice is turned into text on your machine—never sent to a server, fully offline.</p>
-              
-              <!-- Interactive Visual Mockup -->
-              <div class="feature-mockup mockup-voice">
-                <div class="voice-status">
-                  <span class="voice-dot"></span>
-                  <span class="voice-label">Listening on device…</span>
-                </div>
-                <div class="voice-wave-bars" aria-hidden="true">
-                  <span style="--h: 18px;"></span>
-                  <span style="--h: 32px;"></span>
-                  <span style="--h: 22px;"></span>
-                  <span style="--h: 36px;"></span>
-                  <span style="--h: 26px;"></span>
-                  <span style="--h: 30px;"></span>
-                  <span style="--h: 16px;"></span>
-                  <span style="--h: 24px;"></span>
-                </div>
-                <div class="voice-transcript">“Aggressive distorted 808 with punch”</div>
+              <div class="showcase-copy">
+                <span class="showcase-kicker">Say it</span>
+                <h3>Say it out loud</h3>
+                <p>Click the mic, describe the sound and pause. The recording is transcribed on your computer and the search runs straight away.</p>
               </div>
             </article>
 
-            <!-- 3. Drop a reference -->
-            <article class="feature-card">
-              <div class="card-top">
-                <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m17 8-5-5-5 5" /><path d="M12 3v12" /></svg></div>
-                <span class="feature-badge">Acoustic Match</span>
+            <article class="showcase-item">
+              <div class="showcase-media">
+                <video data-loop src="media/klang-audio-match.mp4" poster="media/klang-audio-match.jpg" width="1920" height="1080" autoplay loop muted playsinline preload="metadata" aria-label="Clicking Similar on a kick sample and getting the closest-sounding kicks in the library"></video>
               </div>
-              <h3>Drop a reference</h3>
-              <p>Drag in any WAV, AIFF, FLAC or MP3. KLANG finds the closest-sounding samples in your library. Or click <em>Similar</em> on any result.</p>
-              
-              <!-- Interactive Visual Mockup -->
-              <div class="feature-mockup mockup-drop">
-                <div class="drop-target">
-                  <svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/></svg>
-                  <span>Drop sample here (WAV, FLAC, MP3)</span>
-                </div>
-                <div class="drop-compare">
-                  <div class="drop-pill"><span>ref_kick.wav</span></div>
-                  <span class="drop-arrow">➔</span>
-                  <div class="drop-pill drop-pill-match"><span>sub_punch_808.wav</span><b class="match-pct">98%</b></div>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <!-- Bottom 3 Cards -->
-          <div class="grid grid-3 grid-gap-top">
-            <article class="feature-card feature-card-flat">
-              <div class="card-sub-head">
-                <div class="feature-icon-sm"><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></div>
-                <h3>Filter by feel</h3>
-              </div>
-              <p>Narrow results by length (one-shot or loop), tone (dark to bright) and attack (punchy to soft), measured from the audio.</p>
-              <div class="mini-sliders">
-                <div class="slider-row"><span>Length</span><div class="slider-bar"><i style="width:38%;"></i></div><span>One-shot</span></div>
-                <div class="slider-row"><span>Tone</span><div class="slider-bar"><i style="width:74%;"></i></div><span>Bright</span></div>
-                <div class="slider-row"><span>Attack</span><div class="slider-bar"><i style="width:25%;"></i></div><span>Punchy</span></div>
+              <div class="showcase-copy">
+                <span class="showcase-kicker">Match a reference</span>
+                <h3>Find more like this</h3>
+                <p>Click <em>Similar</em> on any result, or drop in a file of your own, and your library is re-ranked by how close each sound is.</p>
               </div>
             </article>
 
-            <article class="feature-card feature-card-flat">
-              <div class="card-sub-head">
-                <div class="feature-icon-sm"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-                <h3>Preview and drag into your DAW</h3>
+            <article class="showcase-item">
+              <div class="showcase-media">
+                <video data-loop src="media/klang-daw-drag-drop.mp4" poster="media/klang-daw-drag-drop.jpg" width="1920" height="1080" autoplay loop muted playsinline preload="metadata" aria-label="Dragging a kick from the KLANG window onto an empty track in a DAW arrangement"></video>
               </div>
-              <p>Arrow keys and spacebar to audition, scrub the waveform, then drag the file straight into Ableton Live, FL Studio, Reaper or Cubase.</p>
-              <div class="daw-pills">
-                <span>Ableton Live</span>
-                <span>FL Studio</span>
-                <span>Logic Pro</span>
-                <span>Reaper</span>
-                <span>Cubase</span>
-                <span>Bitwig</span>
+              <div class="showcase-copy">
+                <span class="showcase-kicker">Drag and drop</span>
+                <h3>Straight into your project</h3>
+                <p>Grab any result and drop it onto a track. The original file goes in as it is: no exporting, no copying.</p>
+                <p class="showcase-note">The DAW arrangement in this clip is a mock-up.</p>
               </div>
             </article>
 
-            <article class="feature-card feature-card-flat">
-              <div class="card-sub-head">
-                <div class="feature-icon-sm"><svg viewBox="0 0 24 24"><path d="M3 12h3l3-9 6 18 3-9h3"/></svg></div>
+            <article class="showcase-item">
+              <div class="showcase-media">
+                <img src="media/klang-acoustic-sliders.png" width="1356" height="492" loading="lazy" decoding="async" alt="KLANG's macro filters set to a 1-shot length, warm tone and punchy attack, with musical key and match cutoff controls" />
+              </div>
+              <div class="showcase-copy">
+                <span class="showcase-kicker">Filter by feel</span>
+                <h3>Length, tone and attack</h3>
+                <p>Every filter is measured from the audio, so a warm one-shot with a punchy attack is three clicks away.</p>
+              </div>
+            </article>
+
+            <article class="showcase-item">
+              <div class="showcase-media">
+                <img src="media/klang-vital-presets.png" width="2560" height="852" loading="lazy" decoding="async" alt="Vital presets matching “warm analog bass”, filtered to Vital, each with a description and match score" />
+              </div>
+              <div class="showcase-copy">
+                <span class="showcase-kicker">Synth presets</span>
                 <h3>Vital presets too</h3>
-              </div>
-              <p>Search your <code>.vital</code> synth presets by description, and find presets that match the character of a sample.</p>
-              <div class="preset-preview">
-                <div class="preset-top">
-                  <span class="preset-icon">⚡</span>
-                  <span class="preset-name">Warm_Analog_Pad.vital</span>
-                </div>
-                <span class="tag tag-accent">Timbre-matched preset</span>
+                <p>Search <code>.vital</code> presets by description, filter by synth and style, and inspect a patch's envelope, filter and effects before you load it.</p>
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- How it works -->
       <section class="section section-alt" id="how-it-works">
         <div class="wrap">
           <div class="section-head center">
@@ -258,7 +214,6 @@
             <li>
               <div class="step-head">
                 <span class="step-n">1</span>
-                <span class="step-badge">Step 1</span>
               </div>
               <h3>Add your sample folders</h3>
               <p>Point KLANG at your drives. It finds WAV, AIFF and FLAC files and Vital presets in every subfolder.</p>
@@ -266,7 +221,6 @@
             <li>
               <div class="step-head">
                 <span class="step-n">2</span>
-                <span class="step-badge">Step 2</span>
               </div>
               <h3>KLANG listens once</h3>
               <p>Each sound is analysed on your machine and indexed. Rescan any time you add new packs; unchanged files are skipped.</p>
@@ -274,7 +228,6 @@
             <li>
               <div class="step-head">
                 <span class="step-n">3</span>
-                <span class="step-badge">Step 3</span>
               </div>
               <h3>Search, preview, drag</h3>
               <p>Describe what you need and get ranked results instantly, with a match score for every sound.</p>
