@@ -26,12 +26,12 @@
         else if (matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.dataset.theme = "light";
       } catch (e) {}
     </script>
-    <link rel="stylesheet" href="styles.css?v=6" />
+    <link rel="stylesheet" href="styles.css?v=8" />
     <script src="config.js" defer></script>
     <script src="site.js?v=5" defer></script>
     <script src="gsap.min.js" defer></script>
     <script src="ScrollTrigger.min.js" defer></script>
-    <script src="animations.js?v=6" defer></script>
+    <script src="animations.js?v=8" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -208,59 +208,86 @@
         <div class="wrap">
           <div class="section-head center">
             <h2 class="section-title">How it works</h2>
-            <p class="section-sub">Zero complicated setup. Point at your library, let it index once, and start producing.</p>
+            <p class="section-sub">Point at your library, let it index once, and start producing.</p>
           </div>
           <ol class="steps">
             <li>
-              <div class="step-head">
-                <span class="step-n">1</span>
-              </div>
+              <span class="step-n">01</span>
               <h3>Add your sample folders</h3>
               <p>Point KLANG at your drives. It finds WAV, AIFF and FLAC files and Vital presets in every subfolder.</p>
+              <div class="step-meta">WAV · AIFF · FLAC · VITAL</div>
             </li>
             <li>
-              <div class="step-head">
-                <span class="step-n">2</span>
-              </div>
+              <span class="step-n">02</span>
               <h3>KLANG listens once</h3>
               <p>Each sound is analysed on your machine and indexed. Rescan any time you add new packs; unchanged files are skipped.</p>
+              <div class="step-meta">ON-DEVICE AUDIO INDEXING</div>
             </li>
             <li>
-              <div class="step-head">
-                <span class="step-n">3</span>
-              </div>
+              <span class="step-n">03</span>
               <h3>Search, preview, drag</h3>
               <p>Describe what you need and get ranked results instantly, with a match score for every sound.</p>
+              <div class="step-meta">SUB-15 MS QUERY LATENCY</div>
             </li>
           </ol>
         </div>
       </section>
 
       <!-- Privacy -->
-      <section class="section">
+      <section class="section" id="privacy">
         <div class="wrap privacy">
-          <div>
+          <div class="privacy-copy">
+            <span class="kicker">Local-first architecture</span>
             <h2>Your sounds never leave your computer.</h2>
-            <p>Unreleased stems and paid sample packs stay on your drive. KLANG has no cloud, no uploads and no account to run.</p>
+            <p class="privacy-lede">Unreleased stems and paid sample packs stay on your drive. KLANG has no cloud, no uploads, and no account to run.</p>
           </div>
-          <ul class="checks">
-            <li>Search and analysis run 100% locally</li>
-            <li>Voice search transcribed on your machine</li>
-            <li>Works offline after a one-time model download</li>
-            <li>No subscription, ever</li>
-          </ul>
+          <dl class="privacy-specs">
+            <div>
+              <dt>01 / Execution</dt>
+              <dd>
+                <strong>Runs 100% locally on CPU</strong>
+                <span>Audio analysis and semantic matching run directly on your machine with no GPU required.</span>
+              </dd>
+            </div>
+            <div>
+              <dt>02 / Voice</dt>
+              <dd>
+                <strong>On-device transcription</strong>
+                <span>Voice search is transcribed locally on your hardware—recordings are never sent to a remote API.</span>
+              </dd>
+            </div>
+            <div>
+              <dt>03 / Network</dt>
+              <dd>
+                <strong>Air-gapped after first launch</strong>
+                <span>Once the AI models are downloaded on first launch, KLANG runs completely offline.</span>
+              </dd>
+            </div>
+            <div>
+              <dt>04 / Telemetry</dt>
+              <dd>
+                <strong>No account, no tracking</strong>
+                <span>Zero sign-ins, zero background telemetry, and zero cloud dependencies.</span>
+              </dd>
+            </div>
+          </dl>
         </div>
       </section>
 
       <!-- Pricing -->
       <section class="section section-alt" id="pricing">
         <div class="wrap">
-          <h2 class="section-title">Simple pricing. Pay once.</h2>
-          <p class="section-sub">Start free with your favourite kits. Upgrade when you want your whole library searchable.</p>
+          <div class="section-head center">
+            <h2 class="section-title">Simple pricing. Pay once.</h2>
+            <p class="section-sub">Start free with your favourite kits. Upgrade when you want your whole library searchable.</p>
+          </div>
+
           <div class="pricing">
             <article class="plan">
-              <h3>Free</h3>
-              <p class="price"><span class="amount" data-price="free">$0</span><span class="per">forever</span></p>
+              <div class="plan-head">
+                <h3>Free</h3>
+                <p class="price"><span class="amount" data-price="free">$0</span><span class="per">forever</span></p>
+              </div>
               <ul class="checks">
                 <li>Up to <span data-free-limit>2,500</span> samples</li>
                 <li>1 library folder</li>
@@ -268,16 +295,23 @@
                 <li>Length, tone and attack filters</li>
                 <li>Preview and drag into your DAW</li>
               </ul>
-              <a class="btn btn-ghost btn-block" data-cta="download" href="#early-access">Get early access</a>
+              <div class="plan-footer">
+                <a class="btn btn-ghost btn-block" data-cta="download" href="#early-access">Get early access</a>
+                <p class="plan-note-spacer" aria-hidden="true">&nbsp;</p>
+              </div>
             </article>
 
             <article class="plan plan-pro">
-              <p class="plan-badge" data-early-badge>Early-bird price</p>
-              <h3>Pro</h3>
-              <p class="price">
-                <s class="was" data-price="pro-was">$39</s>
-                <span class="amount" data-price="pro">$24</span><span class="per">one-time</span>
-              </p>
+              <div class="plan-badge-wrap">
+                <p class="plan-badge" data-early-badge>Early-bird price</p>
+              </div>
+              <div class="plan-head">
+                <h3>Pro</h3>
+                <p class="price">
+                  <s class="was" data-price="pro-was">$39</s>
+                  <span class="amount" data-price="pro">$24</span><span class="per">one-time</span>
+                </p>
+              </div>
               <ul class="checks">
                 <li>Everything in Free</li>
                 <li>Unlimited samples</li>
@@ -285,15 +319,16 @@
                 <li>Vital preset search and matching</li>
                 <li>All 1.x updates included</li>
               </ul>
-              <a class="btn btn-primary btn-block" data-cta="buy" href="#early-access">Join early access</a>
-              <p class="plan-note" data-buy-note>Pro launches soon. Join early access to lock in the early-bird price.</p>
+              <div class="plan-footer">
+                <a class="btn btn-primary btn-block" data-cta="buy" href="#early-access">Join early access</a>
+                <p class="plan-note" data-buy-note>Pro launches soon. Join early access to lock in the early-bird price.</p>
+              </div>
             </article>
           </div>
           <p class="fineprint">Prices in USD. Local taxes are added at checkout where they apply.</p>
         </div>
       </section>
 
-      <!-- Requirements -->
       <section class="section">
         <div class="wrap narrow">
           <h2 class="section-title">System requirements</h2>
