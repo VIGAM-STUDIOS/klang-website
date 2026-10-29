@@ -26,12 +26,12 @@
         else if (matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.dataset.theme = "light";
       } catch (e) {}
     </script>
-    <link rel="stylesheet" href="styles.css?v=8" />
+    <link rel="stylesheet" href="styles.css?v=9" />
     <script src="config.js" defer></script>
     <script src="site.js?v=5" defer></script>
     <script src="gsap.min.js" defer></script>
     <script src="ScrollTrigger.min.js" defer></script>
-    <script src="animations.js?v=8" defer></script>
+    <script src="animations.js?v=9" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -39,11 +39,19 @@
     <header class="nav">
       <div class="nav-inner">
         <a class="brand" href="#top" aria-label="KLANG">
-          <svg class="logo" viewBox="40 28 168 200" aria-hidden="true">
+          <svg class="wordmark" viewBox="40 28 848 200" aria-hidden="true">
+            <!-- K -->
             <rect x="52" y="40" width="24" height="176" fill="currentColor" />
             <polyline points="191.5,39.5 103.5,127.5 191.5,215.5" fill="none" stroke="currentColor" stroke-width="24" />
+            <!-- L -->
+            <polygon points="244,40 268,40 268,192 352,192 352,216 244,216" fill="currentColor" />
+            <!-- A -->
+            <path d="M384 216 L443 40 H469 L528 216 H502 L456 76 L410 216 Z M416 144 H496 V168 H416 Z" fill="currentColor" />
+            <!-- N -->
+            <polygon points="568,216 568,40 592,40 676,174 676,40 700,40 700,216 676,216 592,82 592,216" fill="currentColor" />
+            <!-- G -->
+            <polygon points="876,92 852,92 852,64 772,64 772,192 852,192 852,146 812,146 812,122 876,122 876,216 748,216 748,40 876,40" fill="currentColor" />
           </svg>
-          <span class="brand-text" aria-hidden="true">LANG</span>
           <span class="sr-only">KLANG</span>
         </a>
         <nav class="nav-links" aria-label="Main">
@@ -415,11 +423,19 @@
     <footer class="footer">
       <div class="footer-inner">
         <span class="brand brand-sm" aria-label="KLANG">
-          <svg class="logo" viewBox="40 28 168 200" aria-hidden="true">
+          <svg class="wordmark" viewBox="40 28 848 200" aria-hidden="true">
+            <!-- K -->
             <rect x="52" y="40" width="24" height="176" fill="currentColor" />
             <polyline points="191.5,39.5 103.5,127.5 191.5,215.5" fill="none" stroke="currentColor" stroke-width="24" />
+            <!-- L -->
+            <polygon points="244,40 268,40 268,192 352,192 352,216 244,216" fill="currentColor" />
+            <!-- A -->
+            <path d="M384 216 L443 40 H469 L528 216 H502 L456 76 L410 216 Z M416 144 H496 V168 H416 Z" fill="currentColor" />
+            <!-- N -->
+            <polygon points="568,216 568,40 592,40 676,174 676,40 700,40 700,216 676,216 592,82 592,216" fill="currentColor" />
+            <!-- G -->
+            <polygon points="876,92 852,92 852,64 772,64 772,192 852,192 852,146 812,146 812,122 876,122 876,216 748,216 748,40 876,40" fill="currentColor" />
           </svg>
-          <span class="brand-text" aria-hidden="true">LANG</span>
           <span class="sr-only">KLANG</span>
         </span>
         <div class="footer-meta">
