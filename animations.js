@@ -28,18 +28,18 @@
     }
 
     // -------------------------------------------------------------------------
-    // 0. Word-by-Word Split for Hero Headline
+    // 0. Word-by-Word Split for Hero Headline (Guaranteed Word Spacing)
     // -------------------------------------------------------------------------
     const h1 = document.querySelector(".hero h1");
     if (h1 && !h1.dataset.animated) {
       h1.dataset.animated = "true";
-      const text = h1.innerHTML;
-      // Split by words while keeping HTML entities like &nbsp; intact
-      const words = text.split(/(?<=\s)|(?<=\b(?=&nbsp;))|(?<=&nbsp;)/);
+      // Extract text content and split by whitespace
+      const words = h1.textContent.trim().split(/\s+/);
       h1.innerHTML = words
-        .map((w) => {
-          if (w.trim() === "" || w === "&nbsp;") return w;
-          return `<span class="anim-word-mask" style="display:inline-block;overflow:hidden;vertical-align:top;"><span class="anim-word" style="display:inline-block;will-change:transform,opacity;">${w}</span></span>`;
+        .map((w, idx) => {
+          // Explicit margin-right ensures words NEVER collide into each other
+          const marginRight = idx === words.length - 1 ? "0" : "0.28em";
+          return `<span class="anim-word-mask" style="display:inline-block;overflow:hidden;vertical-align:top;margin-right:${marginRight};"><span class="anim-word" style="display:inline-block;will-change:transform,opacity;">${w}</span></span>`;
         })
         .join("");
     }
@@ -82,7 +82,7 @@
       "-=0.4"
     );
 
-    // Hero Headline: Word by word glide-up
+    // Hero Headline: Word by word glide-up with tilt
     const animWords = document.querySelectorAll(".hero h1 .anim-word");
     if (animWords.length > 0) {
       heroTl.from(
@@ -120,7 +120,7 @@
       "-=0.5"
     );
 
-    // Hero CTA buttons (with slight spring)
+    // Hero CTA buttons
     heroTl.from(
       ".hero-ctas .btn",
       {
@@ -145,7 +145,7 @@
       "-=0.3"
     );
 
-    // Product demo: 3D perspective entrance
+    // Product demo: 3D perspective entrance + continuous subtle levitation
     heroTl.from(
       ".demo",
       {
@@ -156,7 +156,6 @@
         duration: 1.1,
         ease: "power3.out",
         onComplete: () => {
-          // Ambient breathing levitation when idle
           gsap.to(".demo", {
             y: "-=6",
             duration: 3.5,
@@ -185,8 +184,7 @@
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
-        // Calculate normalized tilt (-1 to 1)
-        const tiltX = (mouseY / rect.height - 0.5) * -8; // degrees
+        const tiltX = (mouseY / rect.height - 0.5) * -8;
         const tiltY = (mouseX / rect.width - 0.5) * 8;
 
         gsap.to(demo, {
@@ -296,26 +294,26 @@
     });
 
     // 3 Main Feature Cards (Lift & staggered entrance)
-    gsap.from("#features .grid-3:first-of-type .card", {
+    gsap.from(".features-hero-grid .feature-card", {
       scrollTrigger: {
-        trigger: "#features .grid-3:first-of-type",
+        trigger: ".features-hero-grid",
         start: "top 78%",
       },
       y: 50,
       opacity: 0,
-      scale: 0.95,
+      scale: 0.96,
       stagger: 0.15,
       duration: 0.75,
       ease: "power2.out",
     });
 
     // Feature Card Icons playful spring
-    gsap.from("#features .card-icon", {
+    gsap.from(".features-hero-grid .feature-icon", {
       scrollTrigger: {
-        trigger: "#features .grid-3:first-of-type",
+        trigger: ".features-hero-grid",
         start: "top 78%",
       },
-      scale: 0.4,
+      scale: 0.5,
       rotate: -15,
       opacity: 0,
       stagger: 0.15,
@@ -325,7 +323,7 @@
     });
 
     // Flat secondary feature cards
-    gsap.from(".grid-gap-top .card-flat", {
+    gsap.from(".grid-gap-top .feature-card-flat", {
       scrollTrigger: {
         trigger: ".grid-gap-top",
         start: "top 82%",
@@ -337,28 +335,16 @@
       ease: "power2.out",
     });
 
-    // "How it works" steps
-    gsap.from(".steps .step-n", {
+    // "How it works" steps (animate entire LI container so numbers NEVER disappear)
+    gsap.from(".steps li", {
       scrollTrigger: {
         trigger: ".steps",
         start: "top 78%",
       },
-      scale: 0,
+      y: 40,
       opacity: 0,
-      stagger: 0.18,
-      duration: 0.6,
-      ease: "back.out(2.2)",
-    });
-
-    gsap.from(".steps li h3, .steps li p", {
-      scrollTrigger: {
-        trigger: ".steps",
-        start: "top 78%",
-      },
-      y: 25,
-      opacity: 0,
-      stagger: 0.1,
-      duration: 0.65,
+      stagger: 0.15,
+      duration: 0.7,
       ease: "power2.out",
     });
 
@@ -392,10 +378,22 @@
         trigger: ".pricing",
         start: "top 76%",
       },
-      y: 50,
+      y: 30,
       opacity: 0,
-      stagger: 0.2,
-      duration: 0.8,
+      stagger: 0.15,
+      duration: 0.7,
+      ease: "power2.out",
+    });
+
+    gsap.from("#pricing .fineprint", {
+      scrollTrigger: {
+        trigger: ".pricing",
+        start: "top 76%",
+      },
+      opacity: 0,
+      y: 15,
+      duration: 0.6,
+      delay: 0.35,
       ease: "power2.out",
     });
 
