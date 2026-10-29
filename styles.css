@@ -57,15 +57,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Motion preferences: animation toggle configurable via animations.js */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
   }
 }
 
@@ -228,26 +223,38 @@ p {
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   backdrop-filter: saturate(160%) blur(14px);
   border-bottom: 1px solid var(--line);
+  width: 100%;
 }
 .nav-inner {
   height: 60px;
   display: flex;
   align-items: center;
   gap: 24px;
+  width: 100%;
+  padding: 0 clamp(16px, 3.5vw, 40px);
 }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 800;
+  gap: 1.5px;
+  font-weight: 850;
   letter-spacing: -0.01em;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 18px;
+  line-height: 1;
 }
-.logo {
-  width: 18px;
-  height: 18px;
+.brand .logo {
+  width: 17px;
+  height: 17px;
   flex: none;
+  display: block;
+}
+.brand-text {
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: inline-block;
+  transform: translateY(0.5px);
 }
 .nav-links {
   display: flex;
@@ -844,23 +851,69 @@ p {
   padding: 28px 0;
   color: var(--ink-3);
   font-size: 14px;
+  width: 100%;
 }
 .footer-inner {
   display: flex;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: 20px;
   flex-wrap: wrap;
+  width: 100%;
+  padding: 0 clamp(16px, 3.5vw, 40px);
 }
 .footer-inner .brand {
   color: var(--ink);
   font-size: 15px;
 }
-.footer-inner a {
-  margin-left: auto;
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.brand-sm {
+  font-size: 15px;
+  gap: 1px;
 }
 .brand-sm .logo {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------------------------------------------------------------- Interactive & Animation Polish */
+.demo {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: box-shadow 0.3s ease;
+}
+.demo:hover {
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.65), 0 0 32px rgba(255, 255, 255, 0.05);
+}
+.card {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.28s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+.card .card-icon {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card:hover .card-icon {
+  transform: scale(1.12) rotate(-3deg);
+}
+.plan {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.25s ease;
+}
+.plan:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+}
+.steps li:hover .step-n {
+  transform: scale(1.12);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ---------------------------------------------------------------- Responsive */

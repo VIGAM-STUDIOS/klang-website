@@ -215,9 +215,7 @@
     const q = $("#demo-query");
     const mic = $("#demo-mic");
     if (!q) return;
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     renderRows(DEMO[0]);
-    if (reduced) return;
 
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     let visible = true;

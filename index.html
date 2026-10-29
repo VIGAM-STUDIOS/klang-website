@@ -26,21 +26,25 @@
         else if (matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.dataset.theme = "light";
       } catch (e) {}
     </script>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=2" />
     <script src="config.js" defer></script>
-    <script src="site.js" defer></script>
+    <script src="site.js?v=2" defer></script>
+    <script src="gsap.min.js" defer></script>
+    <script src="ScrollTrigger.min.js" defer></script>
+    <script src="animations.js?v=2" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
 
     <header class="nav">
-      <div class="wrap nav-inner">
-        <a class="brand" href="#top" aria-label="KLANG home">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="KLANG">
           <svg class="logo" viewBox="40 28 168 200" aria-hidden="true">
             <rect x="52" y="40" width="24" height="176" fill="currentColor" />
             <polyline points="191.5,39.5 103.5,127.5 191.5,215.5" fill="none" stroke="currentColor" stroke-width="24" />
           </svg>
-          <span>KLANG</span>
+          <span class="brand-text" aria-hidden="true">LANG</span>
+          <span class="sr-only">KLANG</span>
         </a>
         <nav class="nav-links" aria-label="Main">
           <a href="#features">Features</a>
@@ -61,7 +65,6 @@
       <!-- Hero -->
       <section class="hero" id="top">
         <div class="wrap hero-inner">
-          <p class="eyebrow">For music producers</p>
           <h1>Search your samples by sound, not&nbsp;filename.</h1>
           <p class="lede">
             Type <q>dusty lo-fi snare</q>, say it out loud, or drop in a reference. KLANG finds matching sounds
@@ -313,16 +316,19 @@
     </main>
 
     <footer class="footer">
-      <div class="wrap footer-inner">
-        <span class="brand brand-sm">
+      <div class="footer-inner">
+        <span class="brand brand-sm" aria-label="KLANG">
           <svg class="logo" viewBox="40 28 168 200" aria-hidden="true">
             <rect x="52" y="40" width="24" height="176" fill="currentColor" />
             <polyline points="191.5,39.5 103.5,127.5 191.5,215.5" fill="none" stroke="currentColor" stroke-width="24" />
           </svg>
-          KLANG
+          <span class="brand-text" aria-hidden="true">LANG</span>
+          <span class="sr-only">KLANG</span>
         </span>
-        <span>© <span id="year">2026</span> VIGAM STUDIOS</span>
-        <a data-contact-link href="#" hidden></a>
+        <div class="footer-meta">
+          <span>© <span id="year">2026</span> VIGAM STUDIOS</span>
+          <a data-contact-link href="#" hidden></a>
+        </div>
       </div>
     </footer>
   </body>
