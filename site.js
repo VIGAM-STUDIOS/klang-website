@@ -41,7 +41,7 @@
         a.textContent = inNav ? "Download" : a.closest('[data-mode="download"]') ? "Download for Windows" : "Download free";
       } else {
         a.href = "#early-access";
-        a.textContent = "Get early access";
+        a.textContent = a.closest(".plan") ? "Get the free beta" : "Get early access";
       }
     });
     $$("[data-nav-download]").forEach((a) => (a.textContent = canDownload ? "Download" : "Early access"));
@@ -54,9 +54,31 @@
     const canBuy = Boolean(cfg.checkoutUrl);
     $$('[data-cta="buy"]').forEach((a) => {
       a.href = canBuy ? cfg.checkoutUrl : "#early-access";
-      a.textContent = canBuy ? `Buy Pro · ${money(early ? cfg.earlyBirdPrice : cfg.proPrice)}` : "Join early access";
+      if (canBuy) a.textContent = `Buy Pro · ${money(early ? cfg.earlyBirdPrice : cfg.proPrice)}`;
+      else a.textContent = early ? `Lock in ${money(cfg.earlyBirdPrice)}` : "Join the Pro waitlist";
     });
     $$("[data-buy-note]").forEach((el) => (el.hidden = canBuy));
+
+    // Until a plan is live, its button opens an email signup right in the card instead of
+    // jumping to the bottom of the page. Signups record which plan was picked.
+    const proSuccess = early
+      ? `You're on the list. Your ${money(cfg.earlyBirdPrice)} early-bird price is reserved, and we'll email you when Pro launches.`
+      : "You're on the list. We'll email you when Pro launches.";
+    $$("[data-plan-open]").forEach((btn) => {
+      const plan = btn.closest(".plan");
+      const box = $("[data-plan-signup]", plan);
+      const isPro = btn.dataset.cta === "buy";
+      $("[data-signup]", box).dataset.success = isPro
+        ? proSuccess
+        : "You're on the list. We'll email you the download as soon as the beta opens.";
+      btn.addEventListener("click", (e) => {
+        if (isPro ? canBuy : canDownload) return;
+        e.preventDefault();
+        btn.hidden = true;
+        box.hidden = false;
+        $('input[type="email"]', box).focus();
+      });
+    });
 
     if (cfg.contactEmail) {
       $$("[data-contact-link]").forEach((a) => {
@@ -264,10 +286,12 @@
   // Early-access signup
   // ---------------------------------------------------------------------------
   function initSignup() {
-    const form = $("#signup");
-    if (!form) return;
-    const msg = $("#signup-msg");
-    const input = $("#signup-email");
+    $$("form[data-signup]").forEach(bindSignup);
+  }
+
+  function bindSignup(form) {
+    const msg = $(".form-msg", form.parentElement);
+    const input = $('input[type="email"]', form);
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = input.value.trim();
@@ -294,7 +318,7 @@
         });
         if (!res.ok) throw new Error(String(res.status));
         form.reset();
-        msg.textContent = "You're on the list. We'll email you as soon as KLANG is ready.";
+        msg.textContent = form.dataset.success || "You're on the list. We'll email you as soon as KLANG is ready.";
         msg.dataset.state = "ok";
       } catch (err) {
         msg.textContent = "Something went wrong. Please try again in a moment.";

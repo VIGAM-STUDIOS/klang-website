@@ -1112,6 +1112,20 @@ p {
   color: var(--ink-3);
   font-size: 15px;
 }
+.plan [hidden] {
+  display: none;
+}
+.plan-signup .signup {
+  margin: 0;
+  max-width: none;
+}
+.plan-signup .form-msg {
+  margin-top: 10px;
+  text-align: center;
+}
+.plan-signup .form-msg:empty {
+  display: none;
+}
 .plan-note {
   margin: 12px 0 0;
   font-size: 13px;
