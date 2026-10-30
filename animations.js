@@ -1,26 +1,21 @@
 /**
  * KLANG Website Animations (GSAP + ScrollTrigger)
- * 
- * High-tech audio aesthetic with interactive physics, 3D card tilt, 
- * word-by-word headline reveals, audio waveform equalizer reactions, 
- * and scroll-driven depth.
- * 
- * To disable or scrap completely: set ANIMATIONS_ENABLED = false.
+ *
+ * Minimalist, high-precision motion system inspired by modern developer & audio SaaS
+ * (Linear, Vercel, Raycast). Focuses on crisp exponential easing, subtle vertical depth,
+ * and zero layout shift or CSS transition conflicts.
+ *
+ * To disable completely: set ANIMATIONS_ENABLED = false.
  */
 (() => {
   "use strict";
 
-  // MASTER TOGGLE: set to false to instantly turn off all animations
   const ANIMATIONS_ENABLED = true;
-
   if (!ANIMATIONS_ENABLED) return;
 
   function initAnimations() {
     const gsap = window.gsap;
-    if (!gsap) {
-      console.warn("GSAP not detected, skipping animations.");
-      return;
-    }
+    if (!gsap) return;
 
     const ScrollTrigger = window.ScrollTrigger;
     if (ScrollTrigger) {
@@ -28,470 +23,351 @@
     }
 
     // -------------------------------------------------------------------------
-    // 0. Word-by-Word Split for Hero Headline (Guaranteed Word Spacing)
+    // 1. Hero Entrance Choreography
     // -------------------------------------------------------------------------
     const h1 = document.querySelector(".hero h1");
     if (h1 && !h1.dataset.animated) {
       h1.dataset.animated = "true";
-      // Extract text content and split by whitespace
       const words = h1.textContent.trim().split(/\s+/);
       h1.innerHTML = words
         .map((w, idx) => {
-          // Explicit margin-right ensures words NEVER collide into each other
           const marginRight = idx === words.length - 1 ? "0" : "0.28em";
-          return `<span class="anim-word-mask" style="display:inline-block;overflow:hidden;vertical-align:top;margin-right:${marginRight};"><span class="anim-word" style="display:inline-block;will-change:transform,opacity;">${w}</span></span>`;
+          return `<span class="anim-word-mask" style="display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:0.08em;margin-bottom:-0.08em;margin-right:${marginRight};"><span class="anim-word" style="display:inline-block;will-change:transform,opacity;">${w}</span></span>`;
         })
         .join("");
     }
 
-    // -------------------------------------------------------------------------
-    // 1. Initial Page Load Choreography (Timeline)
-    // -------------------------------------------------------------------------
     const heroTl = gsap.timeline({
-      defaults: { ease: "power3.out" },
-      delay: 0.15,
+      defaults: { ease: "expo.out" },
+      delay: 0.05,
     });
 
-    // Nav drops down
     heroTl.from(".nav", {
-      y: -30,
+      y: -16,
       opacity: 0,
       duration: 0.7,
+      clearProps: "transform",
     });
 
-    // Brand mark pop
-    heroTl.from(
-      ".nav .brand",
-      {
-        opacity: 0,
-        x: -15,
-        duration: 0.5,
-      },
-      "-=0.4"
-    );
-
-    // Nav links & CTA
-    heroTl.from(
-      [".nav-links a", ".nav-actions"],
-      {
-        opacity: 0,
-        y: -10,
-        stagger: 0.05,
-        duration: 0.5,
-      },
-      "-=0.4"
-    );
-
-    // Hero Headline: Word by word glide-up with tilt
     const animWords = document.querySelectorAll(".hero h1 .anim-word");
     if (animWords.length > 0) {
       heroTl.from(
         animWords,
         {
-          y: 45,
+          yPercent: 100,
           opacity: 0,
-          rotateX: -20,
-          stagger: 0.04,
-          duration: 0.75,
-          ease: "power3.out",
+          stagger: 0.035,
+          duration: 0.85,
+          clearProps: "transform",
         },
-        "-=0.3"
+        "-=0.45"
       );
     } else {
       heroTl.from(
         ".hero h1",
         {
-          y: 35,
+          y: 20,
           opacity: 0,
           duration: 0.8,
+          clearProps: "transform",
         },
-        "-=0.3"
+        "-=0.45"
       );
     }
 
-    // Hero lede
     heroTl.from(
-      ".hero .lede",
+      [".hero .lede", ".hero-ctas", "#hero-note"],
       {
-        y: 25,
+        y: 16,
         opacity: 0,
-        duration: 0.75,
+        stagger: 0.08,
+        duration: 0.8,
+        clearProps: "transform",
       },
-      "-=0.5"
+      "-=0.55"
     );
 
-    // Hero CTA buttons
-    heroTl.from(
-      ".hero-ctas .btn",
-      {
-        y: 20,
-        opacity: 0,
-        scale: 0.92,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "back.out(1.5)",
-      },
-      "-=0.4"
-    );
-
-    // Hero subnote
-    heroTl.from(
-      "#hero-note",
-      {
-        opacity: 0,
-        y: 10,
-        duration: 0.5,
-      },
-      "-=0.3"
-    );
-
-    // Product demo: 3D perspective entrance + continuous subtle levitation
     heroTl.from(
       ".demo",
       {
-        y: 70,
+        y: 36,
         opacity: 0,
-        scale: 0.94,
-        rotateX: 8,
-        duration: 1.1,
-        ease: "power3.out",
-        onComplete: () => {
-          gsap.to(".demo", {
-            y: "-=6",
-            duration: 3.5,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-          });
-        },
+        scale: 0.985,
+        duration: 1.0,
+        clearProps: "transform",
       },
-      "-=0.5"
+      "-=0.6"
     );
 
     // -------------------------------------------------------------------------
-    // 2. Interactive 3D Cursor Tilt for Product Demo
+    // 2. Subtle Interactive Tilt on Primary App Windows (.demo & .app-shot)
     // -------------------------------------------------------------------------
-    const demo = document.querySelector(".demo");
-    if (demo) {
+    function attachSubtlePerspective(selector, maxDeg) {
+      const el = document.querySelector(selector);
+      if (!el) return;
       let rect = null;
 
-      demo.addEventListener("mouseenter", () => {
-        rect = demo.getBoundingClientRect();
+      el.addEventListener("mouseenter", () => {
+        rect = el.getBoundingClientRect();
       });
 
-      demo.addEventListener("mousemove", (e) => {
-        if (!rect) rect = demo.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+      el.addEventListener("mousemove", (e) => {
+        if (!rect) rect = el.getBoundingClientRect();
+        const normX = (e.clientX - rect.left) / rect.width - 0.5;
+        const normY = (e.clientY - rect.top) / rect.height - 0.5;
 
-        const tiltX = (mouseY / rect.height - 0.5) * -8;
-        const tiltY = (mouseX / rect.width - 0.5) * 8;
-
-        gsap.to(demo, {
-          rotateX: tiltX,
-          rotateY: tiltY,
-          transformPerspective: 1000,
-          duration: 0.25,
-          ease: "power1.out",
-        });
-      });
-
-      demo.addEventListener("mouseleave", () => {
-        rect = null;
-        gsap.to(demo, {
-          rotateX: 0,
-          rotateY: 0,
-          duration: 0.8,
+        gsap.to(el, {
+          rotateX: normY * -maxDeg,
+          rotateY: normX * maxDeg,
+          transformPerspective: 1400,
+          duration: 0.35,
           ease: "power2.out",
         });
       });
-    }
 
-    // -------------------------------------------------------------------------
-    // 3. Audio Equalizer Waveform Reaction on Hover
-    // -------------------------------------------------------------------------
-    const demoList = document.querySelector("#demo-rows");
-    if (demoList) {
-      demoList.addEventListener("mouseover", (e) => {
-        const row = e.target.closest(".row");
-        if (!row) return;
-        const waveSvg = row.querySelector(".wave");
-        if (!waveSvg || waveSvg.dataset.animating === "true") return;
-
-        waveSvg.dataset.animating = "true";
-        const rects = waveSvg.querySelectorAll("rect");
-        rects.forEach((r, idx) => {
-          if (idx % 2 === 0) {
-            const origH = parseFloat(r.getAttribute("height") || 10);
-            const origY = parseFloat(r.getAttribute("y") || 10);
-            const factor = 1.3 + Math.random() * 0.7;
-            const newH = Math.min(30, origH * factor);
-            const newY = origY - (newH - origH) / 2;
-
-            gsap.to(r, {
-              attr: { height: newH, y: newY },
-              duration: 0.15 + Math.random() * 0.15,
-              yoyo: true,
-              repeat: 3,
-              ease: "sine.inOut",
-              onComplete: () => {
-                gsap.to(r, {
-                  attr: { height: origH, y: origY },
-                  duration: 0.2,
-                });
-                if (idx === rects.length - 1 || idx === rects.length - 2) {
-                  waveSvg.dataset.animating = "false";
-                }
-              },
-            });
-          }
+      el.addEventListener("mouseleave", () => {
+        rect = null;
+        gsap.to(el, {
+          rotateX: 0,
+          rotateY: 0,
+          duration: 0.7,
+          ease: "expo.out",
+          clearProps: "transform",
         });
       });
     }
 
+    attachSubtlePerspective(".demo", 3.5);
+    attachSubtlePerspective(".app-shot", 2.5);
+
     // -------------------------------------------------------------------------
-    // 4. ScrollTrigger Depth & Parallax
+    // 3. Scroll-Triggered Section Reveals
     // -------------------------------------------------------------------------
     if (!ScrollTrigger) return;
 
-    // Demo Parallax during scroll down
-    gsap.to(".demo", {
-      yPercent: 10,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-
     // Problem Band
-    gsap.from(".band .wrap", {
+    gsap.from(".band .wrap > *", {
       scrollTrigger: {
         trigger: ".band",
-        start: "top 80%",
-      },
-      y: 40,
-      opacity: 0,
-      scale: 0.98,
-      duration: 0.8,
-      ease: "power2.out",
-    });
-
-    // Section Titles
-    gsap.utils.toArray(".section-title").forEach((title) => {
-      gsap.from(title, {
-        scrollTrigger: {
-          trigger: title,
-          start: "top 82%",
-        },
-        y: 35,
-        opacity: 0,
-        duration: 0.7,
-        ease: "power2.out",
-      });
-    });
-
-    // "See it in action": intro line, then the app window rises in with depth
-    gsap.from("#features .section-sub", {
-      scrollTrigger: {
-        trigger: "#features .section-head",
-        start: "top 82%",
+        start: "top 85%",
       },
       y: 20,
       opacity: 0,
-      duration: 0.6,
-      delay: 0.15,
-      ease: "power2.out",
+      stagger: 0.08,
+      duration: 0.8,
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
+    // Section Headers
+    gsap.utils.toArray(".section-head").forEach((head) => {
+      gsap.from(head.children, {
+        scrollTrigger: {
+          trigger: head,
+          start: "top 85%",
+        },
+        y: 20,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.8,
+        ease: "expo.out",
+        clearProps: "transform",
+      });
+    });
+
+    // Standalone Section Titles (Specs, FAQ)
+    gsap.utils.toArray(".section > .wrap > .section-title").forEach((title) => {
+      gsap.from(title, {
+        scrollTrigger: {
+          trigger: title,
+          start: "top 86%",
+        },
+        y: 18,
+        opacity: 0,
+        duration: 0.75,
+        ease: "expo.out",
+        clearProps: "transform",
+      });
+    });
+
+    // Main App Capture Window
     gsap.from(".app-shot", {
       scrollTrigger: {
         trigger: ".app-shot",
         start: "top 85%",
       },
-      y: 70,
+      y: 36,
       opacity: 0,
-      scale: 0.94,
-      rotateX: 8,
-      transformPerspective: 1200,
-      duration: 1.1,
-      ease: "power3.out",
+      scale: 0.985,
+      duration: 1.0,
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
-    // Same cursor tilt as the hero demo, a little gentler for the bigger window
-    const appShot = document.querySelector(".app-shot");
-    if (appShot) {
-      let shotRect = null;
-      appShot.addEventListener("mouseenter", () => {
-        shotRect = appShot.getBoundingClientRect();
-      });
-      appShot.addEventListener("mousemove", (e) => {
-        if (!shotRect) shotRect = appShot.getBoundingClientRect();
-        gsap.to(appShot, {
-          rotateX: ((e.clientY - shotRect.top) / shotRect.height - 0.5) * -5,
-          rotateY: ((e.clientX - shotRect.left) / shotRect.width - 0.5) * 5,
-          transformPerspective: 1400,
-          duration: 0.3,
-          ease: "power1.out",
-        });
-      });
-      appShot.addEventListener("mouseleave", () => {
-        shotRect = null;
-        gsap.to(appShot, { rotateX: 0, rotateY: 0, duration: 0.8, ease: "power2.out" });
-      });
-    }
+    // Showcase Rows: crisp vertical + subtle lateral entrance
+    gsap.utils.toArray(".showcase-item").forEach((item) => {
+      const media = item.querySelector(".showcase-media");
+      const copyChildren = item.querySelectorAll(".showcase-copy > *");
 
-    // Showcase rows: media slides in from its own side, copy follows (stacked on narrow
-    // screens, so everything rises instead; sideways motion there would widen the page)
-    const stacked = window.matchMedia("(max-width: 900px)").matches;
-    gsap.utils.toArray(".showcase-item").forEach((item, i) => {
-      const mediaOnLeft = i % 2 === 0;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: item,
-          start: "top 78%",
+          start: "top 82%",
         },
-        defaults: { ease: "power2.out" },
+        defaults: { ease: "expo.out" },
       });
-      tl.from(item.querySelector(".showcase-media"), {
-        x: stacked ? 0 : mediaOnLeft ? -70 : 70,
-        y: stacked ? 40 : 0,
-        opacity: 0,
-        scale: 0.96,
-        duration: 0.85,
-        ease: "power3.out",
-      }).from(
-        item.querySelectorAll(".showcase-kicker, .showcase-copy h3, .showcase-copy p"),
-        {
-          y: 24,
+
+      if (media) {
+        tl.from(media, {
+          y: 28,
           opacity: 0,
-          stagger: 0.08,
-          duration: 0.55,
-        },
-        "-=0.55"
-      );
+          scale: 0.99,
+          duration: 0.9,
+          clearProps: "transform",
+        });
+      }
+
+      if (copyChildren.length) {
+        tl.from(
+          copyChildren,
+          {
+            y: 18,
+            opacity: 0,
+            stagger: 0.06,
+            duration: 0.75,
+            clearProps: "transform",
+          },
+          "-=0.6"
+        );
+      }
     });
 
-    // "How it works" steps (animate entire LI container so numbers NEVER disappear)
-    gsap.from(".steps li", {
+    // "How it works" 3-Column Architectural Grid
+    gsap.from(".steps", {
       scrollTrigger: {
         trigger: ".steps",
-        start: "top 78%",
+        start: "top 82%",
       },
-      y: 40,
+      y: 24,
       opacity: 0,
-      stagger: 0.15,
+      duration: 0.85,
+      ease: "expo.out",
+      clearProps: "transform",
+    });
+
+    gsap.from(".steps li > *", {
+      scrollTrigger: {
+        trigger: ".steps",
+        start: "top 82%",
+      },
+      y: 14,
+      opacity: 0,
+      stagger: 0.04,
       duration: 0.7,
-      ease: "power2.out",
+      delay: 0.1,
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
-    // Privacy Section (split reveal)
-    gsap.from(".privacy > div", {
+    // Privacy Section: Left Copy + Right Specification Ledger
+    gsap.from(".privacy-copy > *", {
       scrollTrigger: {
-        trigger: ".privacy",
-        start: "top 78%",
-      },
-      x: -40,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power2.out",
-    });
-
-    gsap.from(".privacy .checks li", {
-      scrollTrigger: {
-        trigger: ".privacy .checks",
+        trigger: "#privacy",
         start: "top 80%",
       },
-      x: 30,
+      y: 20,
       opacity: 0,
-      stagger: 0.1,
-      duration: 0.55,
-      ease: "power2.out",
+      stagger: 0.08,
+      duration: 0.8,
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
-    // Pricing Cards
+    gsap.from(".privacy-specs > div", {
+      scrollTrigger: {
+        trigger: ".privacy-specs",
+        start: "top 82%",
+      },
+      y: 16,
+      opacity: 0,
+      stagger: 0.08,
+      duration: 0.75,
+      ease: "expo.out",
+      clearProps: "transform",
+    });
+
+    // Pricing Cards: Simultaneous reveal so cards always share the exact same horizontal baseline
     gsap.from(".pricing .plan", {
       scrollTrigger: {
         trigger: ".pricing",
-        start: "top 76%",
+        start: "top 82%",
       },
-      y: 30,
+      y: 24,
       opacity: 0,
-      stagger: 0.15,
-      duration: 0.7,
-      ease: "power2.out",
+      stagger: 0.08,
+      duration: 0.85,
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
     gsap.from("#pricing .fineprint", {
       scrollTrigger: {
         trigger: ".pricing",
-        start: "top 76%",
-      },
-      opacity: 0,
-      y: 15,
-      duration: 0.6,
-      delay: 0.35,
-      ease: "power2.out",
-    });
-
-    // Pro badge pop
-    gsap.from("[data-early-badge]", {
-      scrollTrigger: {
-        trigger: ".plan-pro",
-        start: "top 76%",
-      },
-      scale: 0.5,
-      opacity: 0,
-      duration: 0.6,
-      delay: 0.35,
-      ease: "back.out(2)",
-    });
-
-    // System Requirements
-    gsap.from(".specs div", {
-      scrollTrigger: {
-        trigger: ".specs",
         start: "top 82%",
       },
-      y: 20,
       opacity: 0,
-      stagger: 0.08,
-      duration: 0.5,
-      ease: "power2.out",
+      y: 10,
+      duration: 0.7,
+      delay: 0.2,
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
-    // FAQ details
+    // System Requirements Ledger
+    gsap.from(".specs > div", {
+      scrollTrigger: {
+        trigger: ".specs",
+        start: "top 85%",
+      },
+      y: 14,
+      opacity: 0,
+      stagger: 0.06,
+      duration: 0.7,
+      ease: "expo.out",
+      clearProps: "transform",
+    });
+
+    // FAQ Accordion Items
     gsap.from(".faq details", {
       scrollTrigger: {
         trigger: ".faq",
-        start: "top 82%",
+        start: "top 85%",
+      },
+      y: 14,
+      opacity: 0,
+      stagger: 0.05,
+      duration: 0.7,
+      ease: "expo.out",
+      clearProps: "transform",
+    });
+
+    // Early Access Section
+    gsap.from("#early-access .narrow > *", {
+      scrollTrigger: {
+        trigger: "#early-access",
+        start: "top 85%",
       },
       y: 20,
       opacity: 0,
       stagger: 0.08,
-      duration: 0.5,
-      ease: "power2.out",
-    });
-
-    // Early Access Signup Card
-    gsap.from("#early-access .narrow", {
-      scrollTrigger: {
-        trigger: "#early-access",
-        start: "top 82%",
-      },
-      y: 40,
-      opacity: 0,
       duration: 0.8,
-      ease: "power2.out",
+      ease: "expo.out",
+      clearProps: "transform",
     });
 
-    // Refresh ScrollTrigger to recalculate exact offsets
     ScrollTrigger.refresh();
   }
 
-  // Initialize once window has loaded
   if (document.readyState === "complete") {
     initAnimations();
   } else {
