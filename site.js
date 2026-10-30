@@ -44,6 +44,7 @@
         a.textContent = "Get early access";
       }
     });
+    $$("[data-nav-download]").forEach((a) => (a.textContent = canDownload ? "Download" : "Early access"));
     $$('[data-mode="waitlist"]').forEach((el) => (el.hidden = canDownload && Boolean(cfg.checkoutUrl)));
     $$('[data-mode="download"]').forEach((el) => (el.hidden = !canDownload));
     $$("[data-version-line]").forEach((el) => {
