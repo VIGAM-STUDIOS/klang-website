@@ -10,7 +10,7 @@ window.KLANG_CONFIG = {
   // "https://github.com/VIGAM-STUDIOS/KLANG/releases/latest/download/KLANG-setup.msi"
   downloadUrl: "",
 
-  // Lemon Squeezy / Paddle / Gumroad checkout link for KLANG Pro.
+  // Lemon Squeezy / Paddle / Gumroad / Dodo Payments checkout link for KLANG Pro.
   checkoutUrl: "",
 
   // Where the early-access form posts. Any service that accepts a form POST with an
@@ -24,7 +24,7 @@ window.KLANG_CONFIG = {
   freeSampleLimit: 2500,
 
   // Shown in the footer and FAQ if set.
-  contactEmail: "",
+  contactEmail: "klang.help@outlook.com",
 
   // Current release, shown under the download button once downloadUrl is set.
   version: "1.0 beta",

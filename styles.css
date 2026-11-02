@@ -944,6 +944,14 @@ p {
   gap: 24px;
   flex-wrap: wrap;
 }
+.footer a {
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.footer a:hover {
+  color: var(--ink);
+}
 .brand-sm .wordmark {
   height: 13px;
   width: auto;
