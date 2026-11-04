@@ -25,7 +25,7 @@ Then open http://127.0.0.1:4173.
 |---|---|---|
 | `waitlistFormAction` | A form endpoint that accepts a POST with an `email` field (e.g. a free [Formspree](https://formspree.io) form URL) | The signup form says signups aren't connected. **Set this before you share the page.** |
 | `downloadUrl` | Link to the Windows installer, e.g. a GitHub Releases asset | Every "Download" button becomes "Get early access" |
-| `checkoutUrl` | Your Lemon Squeezy / Paddle / Gumroad checkout link for Pro | The Pro card shows "Join early access" |
+| `checkoutUrl` | Your Dodo Payments checkout link for Pro | The Pro card shows "Join early access" |
 | `proPrice`, `earlyBirdPrice` | Prices in USD (set `earlyBirdPrice: null` to drop the offer) | — |
 | `contactEmail` | A support address | No contact link is shown |
 
@@ -47,6 +47,6 @@ Either way, every push to `main` redeploys the site. Add your custom domain in t
 
 ## Also needed before selling
 
-Payment providers (Lemon Squeezy, Paddle) review your site before approving a store and expect
+Payment providers (Dodo Payments) review your site before approving a store and expect
 **Terms of Service, a Privacy Policy and a Refund Policy** to be linked. Those pages aren't
 here yet because they're legal commitments you need to decide on (e.g. refund window).

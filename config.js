@@ -10,11 +10,14 @@ window.KLANG_CONFIG = {
   // "https://github.com/VIGAM-STUDIOS/KLANG/releases/latest/download/KLANG-setup.msi"
   downloadUrl: "",
 
-  // Lemon Squeezy / Paddle / Gumroad / Dodo Payments checkout link for KLANG Pro.
-  checkoutUrl: "",
+  // Dodo Payments checkout link for KLANG Pro. This is the TEST-mode link: swap in the live
+  // one (checkout.dodopayments.com, no "test.") at launch, same time as DODO_TEST_MODE in
+  // the app's core/licensing.py.
+  checkoutUrl:
+    "https://test.checkout.dodopayments.com/buy/pdt_0NrD5CH5uU8kdjMFGuxHI?quantity=1&redirect_url=https://klang-website-expq.vercel.app%2F",
 
   // Where the early-access form posts. Any service that accepts a form POST with an
-  // "email" field works (Formspree, Buttondown, Lemon Squeezy email, your own endpoint).
+  // "email" field works (Formspree, Buttondown, your own endpoint).
   waitlistFormAction: "",
 
   // Pricing shown on the page (whole numbers, in priceCurrency).
