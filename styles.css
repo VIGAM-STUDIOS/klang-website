@@ -875,9 +875,11 @@ p {
 }
 
 /* ---------------------------------------------------------------- Signup */
+#download h2,
 #early-access h2 {
   font-size: clamp(28px, 3.8vw, 40px);
 }
+#download p,
 #early-access p {
   color: var(--ink-2);
 }

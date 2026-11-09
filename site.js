@@ -7,11 +7,11 @@
       checkoutUrl: "",
       waitlistFormAction: "",
       priceCurrency: "$",
-      proPrice: 39,
-      earlyBirdPrice: null,
+      proPrice: 30,
+      earlyBirdPrice: 24,
       freeSampleLimit: 2500,
       contactEmail: "",
-      version: "",
+      version: "1.0",
     },
     window.KLANG_CONFIG || {},
   );
@@ -36,26 +36,25 @@
     const canDownload = Boolean(cfg.downloadUrl);
     $$('[data-cta="download"]').forEach((a) => {
       const inNav = Boolean(a.closest(".nav"));
+      const isCard = Boolean(a.closest(".plan"));
       if (canDownload) {
         a.href = cfg.downloadUrl;
-        a.textContent = inNav ? "Download" : a.closest('[data-mode="download"]') ? "Download for Windows" : "Download free";
+        a.textContent = inNav || isCard ? "Download Free" : "Download for Windows";
       } else {
-        a.href = "#early-access";
-        a.textContent = a.closest(".plan") ? "Get the free beta" : "Get early access";
+        a.href = "#download";
+        a.textContent = inNav || isCard ? "Download Free" : "Download for Windows";
       }
     });
-    $$("[data-nav-download]").forEach((a) => (a.textContent = canDownload ? "Download" : "Early access"));
-    $$('[data-mode="waitlist"]').forEach((el) => (el.hidden = canDownload && Boolean(cfg.checkoutUrl)));
-    $$('[data-mode="download"]').forEach((el) => (el.hidden = !canDownload));
+    $$("[data-nav-download]").forEach((a) => (a.textContent = "Download Free"));
+    $$('[data-mode="download"]').forEach((el) => (el.hidden = false));
     $$("[data-version-line]").forEach((el) => {
-      el.textContent = cfg.version ? `Version ${cfg.version} · Windows 10 & 11 (64-bit)` : "Windows 10 & 11 (64-bit)";
+      el.textContent = cfg.version ? `Version ${cfg.version} · Windows 10 & 11 (64-bit) · macOS on Apple Silicon coming soon` : "Windows 10 & 11 (64-bit)";
     });
 
     const canBuy = Boolean(cfg.checkoutUrl);
     $$('[data-cta="buy"]').forEach((a) => {
-      a.href = canBuy ? cfg.checkoutUrl : "#early-access";
-      if (canBuy) a.textContent = `Buy Pro · ${money(early ? cfg.earlyBirdPrice : cfg.proPrice)}`;
-      else a.textContent = early ? `Lock in ${money(cfg.earlyBirdPrice)}` : "Join the Pro waitlist";
+      a.href = canBuy ? cfg.checkoutUrl : "#pricing";
+      a.textContent = `Buy Pro · ${money(early ? cfg.earlyBirdPrice : cfg.proPrice)}`;
     });
     $$("[data-buy-note]").forEach((el) => (el.hidden = canBuy));
 

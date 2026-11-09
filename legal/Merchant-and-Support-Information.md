@@ -39,9 +39,9 @@ All pricing is published transparently on our official website without hidden su
 | Software Tier | Retail Pricing | License Nature | Machine Activations | Scope of Use |
 |---|---|---|---|---|
 | **KLANG Free** | **$0.00** | Free Evaluation | Unlimited | Up to 2,500 local audio samples indexed. Full offline neural & keyword search. |
-| **KLANG Pro** | **$39.00 USD** *(one-time)* | Perpetual Commercial | **Strictly 1 Device** | Unlimited local audio indexing, Vital synthesizer patch search, commercial use. |
+| **KLANG Pro** | **$30.00 USD** *(one-time)* | Perpetual Commercial | **Strictly 1 Device** | Unlimited local audio indexing, Vital synthesizer patch search, commercial use. |
 
-*Promotional or early-bird introductory pricing (e.g. $24.00 USD) may be made available to waitlist registrants during promotional launch windows.*
+*Early-bird introductory pricing ($24.00 USD) is valid during the launch window until December 10, 2026 (normally $30.00 USD).*
 
 ---
 
@@ -84,7 +84,7 @@ KLANG is designed for high-performance audio processing with zero cloud reliance
 |---|---|---|
 | **Public Storefront** | Publicly accessible at `https://klang-website-expq.vercel.app/` | **Verified** |
 | **Published Contact Channel** | Direct monitored contact channel: `klang.help@outlook.com` | **Verified** |
-| **Clear Pricing & Terms** | Transparent one-time perpetual pricing ($39 Pro) | **Verified** |
+| **Clear Pricing & Terms** | Transparent one-time perpetual pricing ($30 Pro; $24 Early-Bird until Dec 10, 2026) | **Verified** |
 | **Merchant of Record Disclosed**| Dodo Payments Inc. explicitly named on storefront and legal contracts | **Verified** |
 | **Terms of Service & EULA** | Legally binding terms governing single-device perpetual license | **Verified** |
 | **Privacy Policy** | Comprehensive GDPR, CCPA, and Indian DPDP disclosures | **Verified** |
