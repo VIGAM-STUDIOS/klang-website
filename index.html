@@ -25,17 +25,15 @@
       if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
       else if (matchMedia("(prefers-color-scheme: light)").matches) document.documentElement.dataset.theme = "light";
     } catch (e) { }
-    // Lock scrolling for gracious loading unless reduced-motion is requested
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.documentElement.classList.add("klang-loading");
-    }
+    // Lock scrolling for gracious loading sequence
+    document.documentElement.classList.add("klang-loading");
   </script>
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
   <script src="gsap.min.js" defer></script>
   <script src="ScrollTrigger.min.js" defer></script>
   <script src="config.js" defer></script>
-  <script src="site.js?v=6" defer></script>
-  <script src="animations.js?v=11" defer></script>
+  <script src="site.js?v=7" defer></script>
+  <script src="animations.js?v=12" defer></script>
 
   <!-- Vercel Web Analytics -->
   <script>

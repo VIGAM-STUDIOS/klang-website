@@ -5,14 +5,11 @@
  * (Linear, Vercel, Raycast). Focuses on crisp exponential easing, subtle vertical depth,
  * and zero layout shift or CSS transition conflicts.
  *
- * Includes a gracious, luxurious preloader that ensures all animations, fonts, and
+ * Includes a gracious preloader that ensures all animations, fonts, and
  * layouts are fully ready before the user sees the page.
  */
 (() => {
   "use strict";
-
-  const prefersReducedMotion =
-    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function dismissPreloaderImmediately() {
     const preloader = document.getElementById("klang-preloader");
@@ -20,12 +17,6 @@
       preloader.style.display = "none";
     }
     document.documentElement.classList.remove("klang-loading");
-  }
-
-  // Accessibility check: instantly show page without motion
-  if (prefersReducedMotion) {
-    dismissPreloaderImmediately();
-    return;
   }
 
   function initAnimations() {
@@ -373,7 +364,7 @@
       gsap.to(preloader, {
         opacity: 0,
         scale: 1.015,
-        duration: 0.5,
+        duration: 0.55,
         ease: "power2.inOut",
         onComplete: () => {
           preloader.style.display = "none";
@@ -385,22 +376,32 @@
     }
 
     if (preloader && preloaderBar) {
-      // Smooth progress bar advancing to 100%
-      gsap.to(preloaderBar, {
-        width: "100%",
-        duration: 0.45,
-        ease: "power2.inOut",
+      const loadTl = gsap.timeline({
         onComplete: finishPreloader,
       });
+
+      // Gracious progress sequence: swift rise to 70%, smooth push to 100%, brief ready moment
+      loadTl
+        .to(preloaderBar, {
+          width: "72%",
+          duration: 0.45,
+          ease: "power2.out",
+        })
+        .to(preloaderBar, {
+          width: "100%",
+          duration: 0.35,
+          ease: "power1.inOut",
+        })
+        .to({}, { duration: 0.18 }); // Brief pause at 100% to savor the completed state
     } else {
       finishPreloader();
     }
 
-    // Safety timeout: Never keep the user waiting more than 1.2s under any condition
-    setTimeout(finishPreloader, 1200);
+    // Safety timeout: Never keep the user waiting more than 1.8s under any condition
+    setTimeout(finishPreloader, 1800);
   }
 
-  // Execute as soon as the DOM is interactive
+  // Execute as soon as DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initAnimations);
   } else {

@@ -99,8 +99,8 @@ html.klang-loading body {
 }
 
 .preloader-track {
-  width: 140px;
-  height: 2px;
+  width: 160px;
+  height: 3px;
   background: var(--line-strong);
   border-radius: 999px;
   overflow: hidden;
@@ -114,7 +114,7 @@ html.klang-loading body {
   background: var(--ink);
   border-radius: 999px;
   will-change: width;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
 }
 
 .preloader-text {

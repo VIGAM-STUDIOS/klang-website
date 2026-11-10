@@ -342,14 +342,6 @@
   function initShowcaseVideos() {
     const videos = $$("video[data-loop]");
     if (!videos.length) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      videos.forEach((v) => {
-        v.removeAttribute("autoplay");
-        v.pause();
-        v.controls = true;
-      });
-      return;
-    }
     if (!("IntersectionObserver" in window)) return;
     // The observer takes over from the autoplay attribute (kept for no-JS visitors).
     videos.forEach((v) => {
