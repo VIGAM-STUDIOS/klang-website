@@ -57,6 +57,76 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ---------------------------------------------------------------- Preloader */
+html.klang-loading,
+html.klang-loading body {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+.klang-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  will-change: opacity, transform;
+}
+
+.preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  user-select: none;
+}
+
+.preloader-mark {
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.15));
+  animation: preloaderPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes preloaderPulse {
+  0% { transform: scale(0.96); opacity: 0.85; }
+  100% { transform: scale(1.03); opacity: 1; }
+}
+
+.preloader-track {
+  width: 140px;
+  height: 2px;
+  background: var(--line-strong);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 26px;
+  position: relative;
+}
+
+.preloader-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+  border-radius: 999px;
+  will-change: width;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.preloader-text {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  margin-top: 14px;
+}
+
 /* Motion preferences: animation toggle configurable via animations.js */
 @media (prefers-reduced-motion: reduce) {
   html {

@@ -5,17 +5,35 @@
  * (Linear, Vercel, Raycast). Focuses on crisp exponential easing, subtle vertical depth,
  * and zero layout shift or CSS transition conflicts.
  *
- * To disable completely: set ANIMATIONS_ENABLED = false.
+ * Includes a gracious, luxurious preloader that ensures all animations, fonts, and
+ * layouts are fully ready before the user sees the page.
  */
 (() => {
   "use strict";
 
-  const ANIMATIONS_ENABLED = true;
-  if (!ANIMATIONS_ENABLED) return;
+  const prefersReducedMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function dismissPreloaderImmediately() {
+    const preloader = document.getElementById("klang-preloader");
+    if (preloader) {
+      preloader.style.display = "none";
+    }
+    document.documentElement.classList.remove("klang-loading");
+  }
+
+  // Accessibility check: instantly show page without motion
+  if (prefersReducedMotion) {
+    dismissPreloaderImmediately();
+    return;
+  }
 
   function initAnimations() {
     const gsap = window.gsap;
-    if (!gsap) return;
+    if (!gsap) {
+      dismissPreloaderImmediately();
+      return;
+    }
 
     const ScrollTrigger = window.ScrollTrigger;
     if (ScrollTrigger) {
@@ -23,7 +41,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 1. Hero Entrance Choreography
+    // 1. Hero Entrance Choreography (Created paused, triggered after preloader)
     // -------------------------------------------------------------------------
     const h1 = document.querySelector(".hero h1");
     if (h1 && !h1.dataset.animated) {
@@ -38,15 +56,15 @@
     }
 
     const heroTl = gsap.timeline({
+      paused: true,
       defaults: { ease: "expo.out" },
-      delay: 0.05,
     });
 
     heroTl.from(".nav", {
       y: -16,
       opacity: 0,
-      duration: 0.7,
-      clearProps: "transform",
+      duration: 0.75,
+      clearProps: "transform,opacity",
     });
 
     const animWords = document.querySelectorAll(".hero h1 .anim-word");
@@ -54,13 +72,13 @@
       heroTl.from(
         animWords,
         {
-          yPercent: 100,
+          yPercent: 110,
           opacity: 0,
           stagger: 0.035,
           duration: 0.85,
-          clearProps: "transform",
+          clearProps: "transform,opacity",
         },
-        "-=0.45"
+        "-=0.5"
       );
     } else {
       heroTl.from(
@@ -69,9 +87,9 @@
           y: 20,
           opacity: 0,
           duration: 0.8,
-          clearProps: "transform",
+          clearProps: "transform,opacity",
         },
-        "-=0.45"
+        "-=0.5"
       );
     }
 
@@ -82,7 +100,7 @@
         opacity: 0,
         stagger: 0.08,
         duration: 0.8,
-        clearProps: "transform",
+        clearProps: "transform,opacity",
       },
       "-=0.55"
     );
@@ -90,287 +108,302 @@
     heroTl.from(
       ".demo",
       {
-        y: 36,
+        y: 32,
         opacity: 0,
         scale: 0.985,
-        duration: 1.0,
-        clearProps: "transform",
+        duration: 0.95,
+        clearProps: "transform,opacity",
       },
       "-=0.6"
     );
 
     // -------------------------------------------------------------------------
-    // 2. Subtle Interactive Tilt on Primary App Windows (.demo & .app-shot)
+    // 2. Subtle Interactive Tilt on Primary App Window (.demo)
     // -------------------------------------------------------------------------
-    function attachSubtlePerspective(selector, maxDeg) {
-      const el = document.querySelector(selector);
-      if (!el) return;
+    const demo = document.querySelector(".demo");
+    if (demo && !window.matchMedia("(pointer: coarse)").matches) {
       let rect = null;
 
-      el.addEventListener("mouseenter", () => {
-        rect = el.getBoundingClientRect();
+      demo.addEventListener("mouseenter", () => {
+        rect = demo.getBoundingClientRect();
       });
 
-      el.addEventListener("mousemove", (e) => {
-        if (!rect) rect = el.getBoundingClientRect();
+      demo.addEventListener("mousemove", (e) => {
+        if (!rect) rect = demo.getBoundingClientRect();
         const normX = (e.clientX - rect.left) / rect.width - 0.5;
         const normY = (e.clientY - rect.top) / rect.height - 0.5;
 
-        gsap.to(el, {
-          rotateX: normY * -maxDeg,
-          rotateY: normX * maxDeg,
+        gsap.to(demo, {
+          rotateX: normY * -3.5,
+          rotateY: normX * 3.5,
           transformPerspective: 1400,
           duration: 0.35,
           ease: "power2.out",
         });
       });
 
-      el.addEventListener("mouseleave", () => {
+      demo.addEventListener("mouseleave", () => {
         rect = null;
-        gsap.to(el, {
+        gsap.to(demo, {
           rotateX: 0,
           rotateY: 0,
-          duration: 0.7,
+          duration: 0.6,
           ease: "expo.out",
           clearProps: "transform",
         });
       });
     }
 
-    attachSubtlePerspective(".demo", 3.5);
-    attachSubtlePerspective(".app-shot", 2.5);
-
     // -------------------------------------------------------------------------
-    // 3. Scroll-Triggered Section Reveals
+    // 3. Scroll-Triggered Section Reveals (High-Performance, once: true)
     // -------------------------------------------------------------------------
-    if (!ScrollTrigger) return;
-
-    // Problem Band
-    gsap.from(".band .wrap > *", {
-      scrollTrigger: {
-        trigger: ".band",
-        start: "top 85%",
-      },
-      y: 20,
-      opacity: 0,
-      stagger: 0.08,
-      duration: 0.8,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    // Section Headers
-    gsap.utils.toArray(".section-head").forEach((head) => {
-      gsap.from(head.children, {
+    if (ScrollTrigger) {
+      // Problem Band
+      gsap.from(".band .wrap > *", {
         scrollTrigger: {
-          trigger: head,
+          trigger: ".band",
           start: "top 85%",
+          once: true,
         },
         y: 20,
         opacity: 0,
         stagger: 0.08,
         duration: 0.8,
         ease: "expo.out",
-        clearProps: "transform",
+        clearProps: "transform,opacity",
       });
-    });
 
-    // Standalone Section Titles (Specs, FAQ)
-    gsap.utils.toArray(".section > .wrap > .section-title").forEach((title) => {
-      gsap.from(title, {
+      // Section Headers
+      gsap.utils.toArray(".section-head").forEach((head) => {
+        gsap.from(head.children, {
+          scrollTrigger: {
+            trigger: head,
+            start: "top 85%",
+            once: true,
+          },
+          y: 20,
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.8,
+          ease: "expo.out",
+          clearProps: "transform,opacity",
+        });
+      });
+
+      // Standalone Section Titles (Specs, FAQ)
+      gsap.utils.toArray(".section > .wrap > .section-title").forEach((title) => {
+        gsap.from(title, {
+          scrollTrigger: {
+            trigger: title,
+            start: "top 86%",
+            once: true,
+          },
+          y: 18,
+          opacity: 0,
+          duration: 0.75,
+          ease: "expo.out",
+          clearProps: "transform,opacity",
+        });
+      });
+
+      // Showcase Rows: crisp vertical entrance
+      gsap.utils.toArray(".showcase-item").forEach((item) => {
+        const media = item.querySelector(".showcase-media");
+        const copyChildren = item.querySelectorAll(".showcase-copy > *");
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: item,
+            start: "top 82%",
+            once: true,
+          },
+          defaults: { ease: "expo.out" },
+        });
+
+        if (media) {
+          tl.from(media, {
+            y: 24,
+            opacity: 0,
+            scale: 0.99,
+            duration: 0.85,
+            clearProps: "transform,opacity",
+          });
+        }
+
+        if (copyChildren.length) {
+          tl.from(
+            copyChildren,
+            {
+              y: 16,
+              opacity: 0,
+              stagger: 0.06,
+              duration: 0.75,
+              clearProps: "transform,opacity",
+            },
+            "-=0.6"
+          );
+        }
+      });
+
+      // "How it works" 3-Column Grid
+      gsap.from(".steps li", {
         scrollTrigger: {
-          trigger: title,
-          start: "top 86%",
+          trigger: ".steps",
+          start: "top 82%",
+          once: true,
         },
-        y: 18,
+        y: 20,
         opacity: 0,
+        stagger: 0.08,
+        duration: 0.8,
+        ease: "expo.out",
+        clearProps: "transform,opacity",
+      });
+
+      // Privacy Section: Left Copy + Right Specification Ledger
+      gsap.from(".privacy-copy > *", {
+        scrollTrigger: {
+          trigger: "#privacy",
+          start: "top 80%",
+          once: true,
+        },
+        y: 20,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.8,
+        ease: "expo.out",
+        clearProps: "transform,opacity",
+      });
+
+      gsap.from(".privacy-specs > div", {
+        scrollTrigger: {
+          trigger: ".privacy-specs",
+          start: "top 82%",
+          once: true,
+        },
+        y: 16,
+        opacity: 0,
+        stagger: 0.08,
         duration: 0.75,
         ease: "expo.out",
-        clearProps: "transform",
+        clearProps: "transform,opacity",
       });
-    });
 
-    // Main App Capture Window
-    gsap.from(".app-shot", {
-      scrollTrigger: {
-        trigger: ".app-shot",
-        start: "top 85%",
-      },
-      y: 36,
-      opacity: 0,
-      scale: 0.985,
-      duration: 1.0,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    // Showcase Rows: crisp vertical + subtle lateral entrance
-    gsap.utils.toArray(".showcase-item").forEach((item) => {
-      const media = item.querySelector(".showcase-media");
-      const copyChildren = item.querySelectorAll(".showcase-copy > *");
-
-      const tl = gsap.timeline({
+      // Pricing Cards: Simultaneous reveal so cards share exact baseline
+      gsap.from(".pricing .plan", {
         scrollTrigger: {
-          trigger: item,
+          trigger: ".pricing",
           start: "top 82%",
+          once: true,
         },
-        defaults: { ease: "expo.out" },
+        y: 24,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.85,
+        ease: "expo.out",
+        clearProps: "transform,opacity",
       });
 
-      if (media) {
-        tl.from(media, {
-          y: 28,
-          opacity: 0,
-          scale: 0.99,
-          duration: 0.9,
-          clearProps: "transform",
-        });
+      gsap.from("#pricing .fineprint", {
+        scrollTrigger: {
+          trigger: ".pricing",
+          start: "top 82%",
+          once: true,
+        },
+        opacity: 0,
+        y: 10,
+        duration: 0.7,
+        delay: 0.2,
+        ease: "expo.out",
+        clearProps: "transform,opacity",
+      });
+
+      // System Requirements Ledger
+      gsap.from(".specs > div", {
+        scrollTrigger: {
+          trigger: ".specs",
+          start: "top 85%",
+          once: true,
+        },
+        y: 14,
+        opacity: 0,
+        stagger: 0.06,
+        duration: 0.7,
+        ease: "expo.out",
+        clearProps: "transform,opacity",
+      });
+
+      // FAQ Accordion Items
+      gsap.from(".faq details", {
+        scrollTrigger: {
+          trigger: ".faq",
+          start: "top 85%",
+          once: true,
+        },
+        y: 14,
+        opacity: 0,
+        stagger: 0.05,
+        duration: 0.7,
+        ease: "expo.out",
+        clearProps: "transform,opacity",
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Gracious Preloader Orchestration
+    // -------------------------------------------------------------------------
+    const preloader = document.getElementById("klang-preloader");
+    const preloaderBar = document.getElementById("preloader-bar");
+    const preloaderText = document.getElementById("preloader-text");
+
+    let isDismissed = false;
+    function finishPreloader() {
+      if (isDismissed) return;
+      isDismissed = true;
+
+      if (!preloader) {
+        document.documentElement.classList.remove("klang-loading");
+        heroTl.play();
+        if (ScrollTrigger) ScrollTrigger.refresh();
+        return;
       }
 
-      if (copyChildren.length) {
-        tl.from(
-          copyChildren,
-          {
-            y: 18,
-            opacity: 0,
-            stagger: 0.06,
-            duration: 0.75,
-            clearProps: "transform",
-          },
-          "-=0.6"
-        );
-      }
-    });
+      if (preloaderText) preloaderText.textContent = "READY";
 
-    // "How it works" 3-Column Architectural Grid
-    gsap.from(".steps", {
-      scrollTrigger: {
-        trigger: ".steps",
-        start: "top 82%",
-      },
-      y: 24,
-      opacity: 0,
-      duration: 0.85,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
+      gsap.to(preloader, {
+        opacity: 0,
+        scale: 1.015,
+        duration: 0.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          preloader.style.display = "none";
+          document.documentElement.classList.remove("klang-loading");
+          heroTl.play();
+          if (ScrollTrigger) ScrollTrigger.refresh();
+        },
+      });
+    }
 
-    gsap.from(".steps li > *", {
-      scrollTrigger: {
-        trigger: ".steps",
-        start: "top 82%",
-      },
-      y: 14,
-      opacity: 0,
-      stagger: 0.04,
-      duration: 0.7,
-      delay: 0.1,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
+    if (preloader && preloaderBar) {
+      // Smooth progress bar advancing to 100%
+      gsap.to(preloaderBar, {
+        width: "100%",
+        duration: 0.45,
+        ease: "power2.inOut",
+        onComplete: finishPreloader,
+      });
+    } else {
+      finishPreloader();
+    }
 
-    // Privacy Section: Left Copy + Right Specification Ledger
-    gsap.from(".privacy-copy > *", {
-      scrollTrigger: {
-        trigger: "#privacy",
-        start: "top 80%",
-      },
-      y: 20,
-      opacity: 0,
-      stagger: 0.08,
-      duration: 0.8,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    gsap.from(".privacy-specs > div", {
-      scrollTrigger: {
-        trigger: ".privacy-specs",
-        start: "top 82%",
-      },
-      y: 16,
-      opacity: 0,
-      stagger: 0.08,
-      duration: 0.75,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    // Pricing Cards: Simultaneous reveal so cards always share the exact same horizontal baseline
-    gsap.from(".pricing .plan", {
-      scrollTrigger: {
-        trigger: ".pricing",
-        start: "top 82%",
-      },
-      y: 24,
-      opacity: 0,
-      stagger: 0.08,
-      duration: 0.85,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    gsap.from("#pricing .fineprint", {
-      scrollTrigger: {
-        trigger: ".pricing",
-        start: "top 82%",
-      },
-      opacity: 0,
-      y: 10,
-      duration: 0.7,
-      delay: 0.2,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    // System Requirements Ledger
-    gsap.from(".specs > div", {
-      scrollTrigger: {
-        trigger: ".specs",
-        start: "top 85%",
-      },
-      y: 14,
-      opacity: 0,
-      stagger: 0.06,
-      duration: 0.7,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    // FAQ Accordion Items
-    gsap.from(".faq details", {
-      scrollTrigger: {
-        trigger: ".faq",
-        start: "top 85%",
-      },
-      y: 14,
-      opacity: 0,
-      stagger: 0.05,
-      duration: 0.7,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    // Early Access Section
-    gsap.from("#early-access .narrow > *", {
-      scrollTrigger: {
-        trigger: "#early-access",
-        start: "top 85%",
-      },
-      y: 20,
-      opacity: 0,
-      stagger: 0.08,
-      duration: 0.8,
-      ease: "expo.out",
-      clearProps: "transform",
-    });
-
-    ScrollTrigger.refresh();
+    // Safety timeout: Never keep the user waiting more than 1.2s under any condition
+    setTimeout(finishPreloader, 1200);
   }
 
-  if (document.readyState === "complete") {
-    initAnimations();
+  // Execute as soon as the DOM is interactive
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAnimations);
   } else {
-    window.addEventListener("load", initAnimations);
+    initAnimations();
   }
 })();
