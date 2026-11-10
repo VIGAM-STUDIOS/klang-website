@@ -1209,3 +1209,9 @@ p {
   font-size: 13px;
   color: var(--ink-2);
 }
+.pro-disclaimer {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--ink-2);
+  text-align: center;
+}
