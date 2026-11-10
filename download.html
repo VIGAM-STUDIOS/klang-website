@@ -6,7 +6,7 @@
     <title>Thanks for choosing KLANG! · Download &amp; Activation</title>
     <meta
       name="description"
-      content="Download KLANG for Windows and activate your Pro license. Fast offline audio search for music producers."
+      content="Download KLANG for Windows and macOS, and activate your Pro license. Fast offline audio search for music producers."
     />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
@@ -346,16 +346,31 @@
           </p>
 
           <div class="download-action-box">
-            <a class="btn btn-primary btn-lg download-btn" id="pro-download" href="#" data-cta="download">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              Download KLANG for Windows
-            </a>
+            <div class="download-dual-box">
+              <div class="download-choice">
+                <a class="btn btn-primary btn-lg download-btn" id="dl-win-btn" href="https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-Windows-x64-setup.exe">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.902-1.799"/>
+                  </svg>
+                  Download for Windows
+                </a>
+                <span class="choice-spec">Windows 10 &amp; 11 (64-bit) · <code>.exe</code></span>
+                <span class="choice-badge" id="badge-win">Recommended for your PC</span>
+              </div>
+
+              <div class="download-choice">
+                <a class="btn btn-ghost btn-lg download-btn" id="dl-mac-btn" href="https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-macOS-arm64.dmg">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.98.6-2.61 1.34-.55.63-1.03 1.66-.9 2.68 1 .08 2.01-.5 2.59-1.17z"/>
+                  </svg>
+                  Download for macOS
+                </a>
+                <span class="choice-spec">Apple Silicon M1+ · macOS 14+ · <code>.dmg</code></span>
+                <span class="choice-badge" id="badge-mac" hidden>Recommended for your Mac</span>
+              </div>
+            </div>
             <p class="download-meta">
-              <span id="version-display">Version 1.0</span> · Windows 10 &amp; 11 (64-bit) · 100% Offline Architecture
+              <span id="version-display">Version 1.0</span> · 100% Offline Architecture · No Account Required
             </p>
           </div>
 
@@ -446,22 +461,50 @@
     <script>
       (() => {
         const cfg = window.KLANG_CONFIG || {};
-        const downloadBtn = document.getElementById("pro-download");
+        const dlWinBtn = document.getElementById("dl-win-btn");
+        const dlMacBtn = document.getElementById("dl-mac-btn");
+        const badgeWin = document.getElementById("badge-win");
+        const badgeMac = document.getElementById("badge-mac");
         const versionEl = document.getElementById("version-display");
 
         if (cfg.version && versionEl) {
           versionEl.textContent = "Version " + cfg.version;
         }
 
-        if (downloadBtn) {
-          if (cfg.downloadUrl) {
-            downloadBtn.href = cfg.downloadUrl;
-          } else {
-            downloadBtn.addEventListener("click", (e) => {
-              e.preventDefault();
-              alert("The Windows installer asset is being uploaded right now. Please refresh this page in a moment to download!");
-            });
+        if (cfg.downloadUrlWindows && dlWinBtn) {
+          dlWinBtn.href = cfg.downloadUrlWindows;
+        }
+        if (cfg.downloadUrlMac && dlMacBtn) {
+          dlMacBtn.href = cfg.downloadUrlMac;
+        }
+
+        // Detect OS and highlight recommended installer
+        const ua = (navigator.userAgent || "").toLowerCase();
+        const plat = (navigator.platform || "").toLowerCase();
+        const isMac = plat.includes("mac") || ua.includes("macintosh") || ua.includes("mac os");
+
+        if (isMac) {
+          if (dlMacBtn) {
+            dlMacBtn.classList.remove("btn-ghost");
+            dlMacBtn.classList.add("btn-primary");
           }
+          if (badgeMac) badgeMac.hidden = false;
+          if (dlWinBtn) {
+            dlWinBtn.classList.remove("btn-primary");
+            dlWinBtn.classList.add("btn-ghost");
+          }
+          if (badgeWin) badgeWin.hidden = true;
+        } else {
+          if (dlWinBtn) {
+            dlWinBtn.classList.remove("btn-ghost");
+            dlWinBtn.classList.add("btn-primary");
+          }
+          if (badgeWin) badgeWin.hidden = false;
+          if (dlMacBtn) {
+            dlMacBtn.classList.remove("btn-primary");
+            dlMacBtn.classList.add("btn-ghost");
+          }
+          if (badgeMac) badgeMac.hidden = true;
         }
 
         // Check URL parameters for license key (if passed by Dodo Payments redirect)
@@ -501,3 +544,4 @@
     </script>
   </body>
 </html>
+

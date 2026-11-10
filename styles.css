@@ -1151,3 +1151,85 @@ p {
     height: 48px;
   }
 }
+
+
+/* ---------------------------------------------------------------- Multi-Platform Download */
+.download-platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 680px;
+  margin: 32px auto 20px;
+  text-align: left;
+}
+.platform-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.platform-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+.platform-card.is-recommended {
+  border-color: var(--good);
+  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(52, 211, 153, 0.08) 0%, var(--surface) 100%);
+}
+.platform-icon {
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.platform-info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.platform-spec {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 0 0 18px;
+}
+.platform-spec code {
+  font-size: 12px;
+}
+.platform-rec {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--good);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.download-dual-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 620px;
+  margin: 0 auto 16px;
+}
+.download-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.choice-spec {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.choice-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--good);
+  letter-spacing: 0.05em;
+}

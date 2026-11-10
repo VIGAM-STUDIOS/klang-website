@@ -20,6 +20,21 @@
   const money = (n) => `${cfg.priceCurrency}${n}`;
 
   // ---------------------------------------------------------------------------
+  // OS Detection (Windows / macOS)
+  // ---------------------------------------------------------------------------
+  function detectOS() {
+    const ua = (navigator.userAgent || "").toLowerCase();
+    const plat = (navigator.platform || "").toLowerCase();
+    if (plat.includes("mac") || ua.includes("macintosh") || ua.includes("mac os")) {
+      return "mac";
+    }
+    if (plat.includes("win") || ua.includes("windows")) {
+      return "windows";
+    }
+    return "other";
+  }
+
+  // ---------------------------------------------------------------------------
   // Apply config: prices, links, which mode the page is in
   // ---------------------------------------------------------------------------
   function applyConfig() {
@@ -33,22 +48,49 @@
     $$("[data-early-badge]").forEach((el) => (el.hidden = !early));
     $$("[data-free-limit]").forEach((el) => (el.textContent = Number(cfg.freeSampleLimit).toLocaleString("en-US")));
 
-    const canDownload = Boolean(cfg.downloadUrl);
+    const canDownload = Boolean(cfg.downloadUrl || cfg.downloadUrlWindows || cfg.downloadUrlMac);
+
+    // Wire up dual-platform download cards
+    const os = detectOS();
+    const btnWin = $("#btn-dl-win");
+    const btnMac = $("#btn-dl-mac");
+    const cardWin = $("#card-windows");
+    const cardMac = $("#card-mac");
+    const recWin = $("#rec-windows");
+    const recMac = $("#rec-mac");
+
+    if (btnWin && (cfg.downloadUrlWindows || cfg.downloadUrl)) {
+      btnWin.href = cfg.downloadUrlWindows || cfg.downloadUrl;
+    }
+    if (btnMac && cfg.downloadUrlMac) {
+      btnMac.href = cfg.downloadUrlMac;
+    }
+
+    if (os === "mac") {
+      if (cardMac) cardMac.classList.add("is-recommended");
+      if (recMac) recMac.hidden = false;
+      if (cardWin) cardWin.classList.remove("is-recommended");
+      if (recWin) recWin.hidden = true;
+    } else {
+      if (cardWin) cardWin.classList.add("is-recommended");
+      if (recWin) recWin.hidden = false;
+      if (cardMac) cardMac.classList.remove("is-recommended");
+      if (recMac) recMac.hidden = true;
+    }
+
     $$('[data-cta="download"]').forEach((a) => {
-      const inNav = Boolean(a.closest(".nav"));
-      const isCard = Boolean(a.closest(".plan"));
-      if (canDownload) {
-        a.href = cfg.downloadUrl;
-        a.textContent = inNav || isCard ? "Download Free" : "Download for Windows";
-      } else {
-        a.href = "#download";
-        a.textContent = inNav || isCard ? "Download Free" : "Download for Windows";
-      }
+      a.href = "#download";
+      a.textContent = "Download Free";
     });
-    $$("[data-nav-download]").forEach((a) => (a.textContent = "Download Free"));
+    $$("[data-nav-download]").forEach((a) => {
+      a.href = "#download";
+      a.textContent = "Download Free";
+    });
     $$('[data-mode="download"]').forEach((el) => (el.hidden = false));
     $$("[data-version-line]").forEach((el) => {
-      el.textContent = cfg.version ? `Version ${cfg.version} · Windows 10 & 11 (64-bit) · macOS on Apple Silicon coming soon` : "Windows 10 & 11 (64-bit)";
+      el.textContent = cfg.version
+        ? `Version ${cfg.version} · Windows 10 & 11 (64-bit) · macOS (Apple Silicon)`
+        : "Windows 10 & 11 (64-bit) · macOS (Apple Silicon)";
     });
 
     const canBuy = Boolean(cfg.checkoutUrl);
@@ -58,24 +100,24 @@
     });
     $$("[data-buy-note]").forEach((el) => (el.hidden = canBuy));
 
-    // Until a plan is live, its button opens an email signup right in the card instead of
-    // jumping to the bottom of the page. Signups record which plan was picked.
-    const proSuccess = early
-      ? `You're on the list. Your ${money(cfg.earlyBirdPrice)} early-bird price is reserved, and we'll email you when Pro launches.`
-      : "You're on the list. We'll email you when Pro launches.";
     $$("[data-plan-open]").forEach((btn) => {
       const plan = btn.closest(".plan");
       const box = $("[data-plan-signup]", plan);
+      if (!box) return;
       const isPro = btn.dataset.cta === "buy";
-      $("[data-signup]", box).dataset.success = isPro
-        ? proSuccess
-        : "You're on the list. We'll email you the download as soon as the beta opens.";
+      const signupForm = $("[data-signup]", box);
+      if (signupForm) {
+        signupForm.dataset.success = isPro
+          ? "Your Pro license is confirmed."
+          : "Download KLANG Free directly from the download section.";
+      }
       btn.addEventListener("click", (e) => {
         if (isPro ? canBuy : canDownload) return;
         e.preventDefault();
         btn.hidden = true;
         box.hidden = false;
-        $('input[type="email"]', box).focus();
+        const emailInput = $('input[type="email"]', box);
+        if (emailInput) emailInput.focus();
       });
     });
 

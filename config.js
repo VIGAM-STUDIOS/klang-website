@@ -1,13 +1,16 @@
 /*
  * KLANG website settings: the only file you need to edit to launch.
- *
- * When downloadUrl is empty, download buttons scroll to the #download section
- * until the GitHub release link is pasted here.
  */
 window.KLANG_CONFIG = {
-  // Windows installer (GitHub Releases asset link once uploaded):
-  // e.g. "https://github.com/VIGAM-STUDIOS/KLANG/releases/latest/download/KLANG-setup.msi"
-  downloadUrl: "",
+  // Direct installer download links:
+  downloadUrlWindows:
+    "https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-Windows-x64-setup.exe",
+  downloadUrlMac:
+    "https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-macOS-arm64.dmg",
+
+  // Default download URL fallback (Windows):
+  downloadUrl:
+    "https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-Windows-x64-setup.exe",
 
   // Dodo Payments live checkout link for KLANG Pro:
   checkoutUrl:
@@ -23,6 +26,6 @@ window.KLANG_CONFIG = {
   // Shown in the footer and FAQ if set.
   contactEmail: "klang.help@outlook.com",
 
-  // Current release, shown under the download button.
+  // Current release, shown under the download buttons.
   version: "1.0",
 };
