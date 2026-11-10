@@ -28,12 +28,12 @@
     // Lock scrolling for gracious loading sequence
     document.documentElement.classList.add("klang-loading");
   </script>
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=13" />
   <script src="gsap.min.js" defer></script>
   <script src="ScrollTrigger.min.js" defer></script>
   <script src="config.js" defer></script>
   <script src="site.js?v=7" defer></script>
-  <script src="animations.js?v=12" defer></script>
+  <script src="animations.js?v=13" defer></script>
 
   <!-- Vercel Web Analytics -->
   <script>
@@ -43,19 +43,53 @@
 </head>
 
 <body>
-  <!-- Gracious Preloader: ensures animations, fonts and layouts are primed -->
-  <div id="klang-preloader" class="klang-preloader" role="status" aria-label="Loading KLANG">
-    <div class="preloader-inner">
-      <div class="preloader-mark">
-        <svg viewBox="0 0 256 256" width="42" height="42" aria-hidden="true">
-          <rect x="52" y="40" width="26" height="176" fill="currentColor" />
-          <polyline points="191.5,39.5 103.5,127.5 191.5,215.5" fill="none" stroke="currentColor" stroke-width="26" stroke-linecap="butt" stroke-linejoin="miter" />
+  <!-- Desktop App Symmetrical Audio Spectrum Loading Screen -->
+  <div id="klang-preloader" class="klang-preloader" role="status" aria-live="polite" aria-label="Loading KLANG">
+    <div class="klang-loading-inner">
+      <!-- Bare K mark seamlessly blended directly into background -->
+      <div class="klang-loading-logo">
+        <svg width="40" height="40" viewBox="40 28 168 200" aria-hidden="true">
+          <rect x="52" y="40" width="24" height="176" fill="currentColor" />
+          <polyline
+            points="191.5,39.5 103.5,127.5 191.5,215.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="24"
+            stroke-linecap="butt"
+            stroke-linejoin="miter"
+          />
         </svg>
       </div>
-      <div class="preloader-track" aria-hidden="true">
-        <div class="preloader-bar" id="preloader-bar"></div>
+
+      <!-- Minimalist wordmark -->
+      <h1 class="klang-loading-wordmark">KLANG</h1>
+
+      <!-- Clean audio visualizer (23 symmetrical bars from desktop app) -->
+      <div class="klang-loading-spectrum" id="klang-loading-spectrum" aria-hidden="true">
+        <span class="klang-eq-bar" style="height:20%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.7s ease-in-out 0.0s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:32%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.3s ease-in-out 0.16s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:48%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.18s ease-in-out 0.32s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:65%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.06s ease-in-out 0.48s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:80%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.94s ease-in-out 0.08s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:60%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.82s ease-in-out 0.24s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:42%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.7s ease-in-out 0.4s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:75%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.3s ease-in-out 0.0s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:92%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.18s ease-in-out 0.16s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:55%;background-color:rgba(255, 255, 255, 0.85);animation:klangEqWave 1.06s ease-in-out 0.32s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:38%;background-color:rgba(255, 255, 255, 0.85);animation:klangEqWave 0.94s ease-in-out 0.48s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:70%;background-color:rgba(255, 255, 255, 0.85);animation:klangEqWave 0.82s ease-in-out 0.08s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:38%;background-color:rgba(255, 255, 255, 0.85);animation:klangEqWave 0.7s ease-in-out 0.24s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:55%;background-color:rgba(255, 255, 255, 0.85);animation:klangEqWave 1.3s ease-in-out 0.4s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:92%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.18s ease-in-out 0.0s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:75%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.06s ease-in-out 0.16s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:42%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.94s ease-in-out 0.32s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:60%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.82s ease-in-out 0.48s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:80%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.7s ease-in-out 0.08s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:65%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.3s ease-in-out 0.24s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:48%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.18s ease-in-out 0.4s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:32%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 1.06s ease-in-out 0.0s infinite alternate;"></span>
+        <span class="klang-eq-bar" style="height:20%;background-color:rgba(255, 255, 255, 0.35);animation:klangEqWave 0.94s ease-in-out 0.16s infinite alternate;"></span>
       </div>
-      <span class="preloader-text" id="preloader-text">INITIALIZING</span>
     </div>
   </div>
   <noscript>

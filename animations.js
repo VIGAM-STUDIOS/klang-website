@@ -341,11 +341,9 @@
     }
 
     // -------------------------------------------------------------------------
-    // 4. Gracious Preloader Orchestration
+    // 4. Desktop App Spectrum Loading Sequence (Mirrors LoadingScreen.tsx)
     // -------------------------------------------------------------------------
     const preloader = document.getElementById("klang-preloader");
-    const preloaderBar = document.getElementById("preloader-bar");
-    const preloaderText = document.getElementById("preloader-text");
 
     let isDismissed = false;
     function finishPreloader() {
@@ -359,46 +357,27 @@
         return;
       }
 
-      if (preloaderText) preloaderText.textContent = "READY";
+      // Step 1: Flatten spectrum bars to 20% resting state (matches app's isDone state)
+      preloader.classList.add("is-done");
 
-      gsap.to(preloader, {
-        opacity: 0,
-        scale: 1.015,
-        duration: 0.55,
-        ease: "power2.inOut",
-        onComplete: () => {
-          preloader.style.display = "none";
-          document.documentElement.classList.remove("klang-loading");
-          heroTl.play();
-          if (ScrollTrigger) ScrollTrigger.refresh();
-        },
-      });
-    }
-
-    if (preloader && preloaderBar) {
-      const loadTl = gsap.timeline({
-        onComplete: finishPreloader,
-      });
-
-      // Gracious progress sequence: swift rise to 70%, smooth push to 100%, brief ready moment
-      loadTl
-        .to(preloaderBar, {
-          width: "72%",
-          duration: 0.45,
+      // Step 2: After 150ms resting pause, fade out over 500ms
+      setTimeout(() => {
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.5,
           ease: "power2.out",
-        })
-        .to(preloaderBar, {
-          width: "100%",
-          duration: 0.35,
-          ease: "power1.inOut",
-        })
-        .to({}, { duration: 0.18 }); // Brief pause at 100% to savor the completed state
-    } else {
-      finishPreloader();
+          onComplete: () => {
+            preloader.style.display = "none";
+            document.documentElement.classList.remove("klang-loading");
+            heroTl.play();
+            if (ScrollTrigger) ScrollTrigger.refresh();
+          },
+        });
+      }, 150);
     }
 
-    // Safety timeout: Never keep the user waiting more than 1.8s under any condition
-    setTimeout(finishPreloader, 1800);
+    // Run visualizer for 1.35s then smoothly dismiss
+    setTimeout(finishPreloader, 1350);
   }
 
   // Execute as soon as DOM is ready
