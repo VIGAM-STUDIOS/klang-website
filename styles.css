@@ -1177,10 +1177,6 @@ p {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
-.platform-card.is-recommended {
-  border-color: var(--good);
-  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(52, 211, 153, 0.08) 0%, var(--surface) 100%);
-}
 .platform-icon {
   color: var(--ink);
   margin-bottom: 12px;
@@ -1196,19 +1192,6 @@ p {
   color: var(--ink-2);
   margin: 0 0 18px;
 }
-.platform-spec code {
-  font-size: 12px;
-}
-.platform-rec {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--good);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
 .download-dual-box {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1223,13 +1206,6 @@ p {
   align-items: center;
 }
 .choice-spec {
-  font-size: 12px;
-  color: var(--ink-3);
-}
-.choice-badge {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--good);
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  color: var(--ink-2);
 }

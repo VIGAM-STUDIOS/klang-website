@@ -20,21 +20,6 @@
   const money = (n) => `${cfg.priceCurrency}${n}`;
 
   // ---------------------------------------------------------------------------
-  // OS Detection (Windows / macOS)
-  // ---------------------------------------------------------------------------
-  function detectOS() {
-    const ua = (navigator.userAgent || "").toLowerCase();
-    const plat = (navigator.platform || "").toLowerCase();
-    if (plat.includes("mac") || ua.includes("macintosh") || ua.includes("mac os")) {
-      return "mac";
-    }
-    if (plat.includes("win") || ua.includes("windows")) {
-      return "windows";
-    }
-    return "other";
-  }
-
-  // ---------------------------------------------------------------------------
   // Apply config: prices, links, which mode the page is in
   // ---------------------------------------------------------------------------
   function applyConfig() {
@@ -51,31 +36,14 @@
     const canDownload = Boolean(cfg.downloadUrl || cfg.downloadUrlWindows || cfg.downloadUrlMac);
 
     // Wire up dual-platform download cards
-    const os = detectOS();
     const btnWin = $("#btn-dl-win");
     const btnMac = $("#btn-dl-mac");
-    const cardWin = $("#card-windows");
-    const cardMac = $("#card-mac");
-    const recWin = $("#rec-windows");
-    const recMac = $("#rec-mac");
 
     if (btnWin && (cfg.downloadUrlWindows || cfg.downloadUrl)) {
       btnWin.href = cfg.downloadUrlWindows || cfg.downloadUrl;
     }
     if (btnMac && cfg.downloadUrlMac) {
       btnMac.href = cfg.downloadUrlMac;
-    }
-
-    if (os === "mac") {
-      if (cardMac) cardMac.classList.add("is-recommended");
-      if (recMac) recMac.hidden = false;
-      if (cardWin) cardWin.classList.remove("is-recommended");
-      if (recWin) recWin.hidden = true;
-    } else {
-      if (cardWin) cardWin.classList.add("is-recommended");
-      if (recWin) recWin.hidden = false;
-      if (cardMac) cardMac.classList.remove("is-recommended");
-      if (recMac) recMac.hidden = true;
     }
 
     $$('[data-cta="download"]').forEach((a) => {
@@ -88,9 +56,7 @@
     });
     $$('[data-mode="download"]').forEach((el) => (el.hidden = false));
     $$("[data-version-line]").forEach((el) => {
-      el.textContent = cfg.version
-        ? `Version ${cfg.version} · Windows 10 & 11 (64-bit) · macOS (Apple Silicon)`
-        : "Windows 10 & 11 (64-bit) · macOS (Apple Silicon)";
+      el.textContent = "Windows 10 & 11 (64-bit) · macOS (Apple Silicon)";
     });
 
     const canBuy = Boolean(cfg.checkoutUrl);

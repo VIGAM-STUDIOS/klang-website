@@ -39,7 +39,6 @@
         flex-direction: column;
         justify-content: center;
         padding: 56px 0 80px;
-        background: radial-gradient(ellipse 70% 50% at 50% 15%, rgba(52, 211, 153, 0.07) 0%, transparent 100%);
       }
 
       .download-card {
@@ -57,9 +56,9 @@
         width: 56px;
         height: 56px;
         border-radius: 50%;
-        background: rgba(52, 211, 153, 0.12);
-        border: 1px solid rgba(52, 211, 153, 0.35);
-        color: var(--good);
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        color: var(--ink);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -76,7 +75,7 @@
         border-radius: 999px;
         background: var(--surface-2);
         border: 1px solid var(--line);
-        color: var(--good);
+        color: var(--ink-2);
         margin-bottom: 16px;
       }
 
@@ -202,14 +201,14 @@
         gap: 14px;
         background: var(--surface);
         border: 1px solid var(--line-strong);
-        border-left: 4px solid var(--good);
+        border-left: 3px solid var(--ink);
         border-radius: 8px;
         padding: 16px 18px;
         margin-top: 20px;
       }
 
       .callout-icon {
-        color: var(--good);
+        color: var(--ink);
         flex-shrink: 0;
         margin-top: 2px;
       }
@@ -354,23 +353,21 @@
                   </svg>
                   Download for Windows
                 </a>
-                <span class="choice-spec">Windows 10 &amp; 11 (64-bit) · <code>.exe</code></span>
-                <span class="choice-badge" id="badge-win">Recommended for your PC</span>
+                <span class="choice-spec">Windows 10 &amp; 11 (64-bit)</span>
               </div>
 
               <div class="download-choice">
-                <a class="btn btn-ghost btn-lg download-btn" id="dl-mac-btn" href="https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-macOS-arm64.dmg">
+                <a class="btn btn-primary btn-lg download-btn" id="dl-mac-btn" href="https://github.com/VIGAM-STUDIOS/klang-website/releases/latest/download/KLANG-macOS-arm64.dmg">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.98.6-2.61 1.34-.55.63-1.03 1.66-.9 2.68 1 .08 2.01-.5 2.59-1.17z"/>
                   </svg>
                   Download for macOS
                 </a>
-                <span class="choice-spec">Apple Silicon M1+ · macOS 14+ · <code>.dmg</code></span>
-                <span class="choice-badge" id="badge-mac" hidden>Recommended for your Mac</span>
+                <span class="choice-spec">macOS 14 Sonoma+ (Apple Silicon)</span>
               </div>
             </div>
             <p class="download-meta">
-              <span id="version-display">Version 1.0</span> · 100% Offline Architecture · No Account Required
+              100% Offline Architecture · No Account Required
             </p>
           </div>
 
@@ -463,48 +460,12 @@
         const cfg = window.KLANG_CONFIG || {};
         const dlWinBtn = document.getElementById("dl-win-btn");
         const dlMacBtn = document.getElementById("dl-mac-btn");
-        const badgeWin = document.getElementById("badge-win");
-        const badgeMac = document.getElementById("badge-mac");
-        const versionEl = document.getElementById("version-display");
-
-        if (cfg.version && versionEl) {
-          versionEl.textContent = "Version " + cfg.version;
-        }
 
         if (cfg.downloadUrlWindows && dlWinBtn) {
           dlWinBtn.href = cfg.downloadUrlWindows;
         }
         if (cfg.downloadUrlMac && dlMacBtn) {
           dlMacBtn.href = cfg.downloadUrlMac;
-        }
-
-        // Detect OS and highlight recommended installer
-        const ua = (navigator.userAgent || "").toLowerCase();
-        const plat = (navigator.platform || "").toLowerCase();
-        const isMac = plat.includes("mac") || ua.includes("macintosh") || ua.includes("mac os");
-
-        if (isMac) {
-          if (dlMacBtn) {
-            dlMacBtn.classList.remove("btn-ghost");
-            dlMacBtn.classList.add("btn-primary");
-          }
-          if (badgeMac) badgeMac.hidden = false;
-          if (dlWinBtn) {
-            dlWinBtn.classList.remove("btn-primary");
-            dlWinBtn.classList.add("btn-ghost");
-          }
-          if (badgeWin) badgeWin.hidden = true;
-        } else {
-          if (dlWinBtn) {
-            dlWinBtn.classList.remove("btn-ghost");
-            dlWinBtn.classList.add("btn-primary");
-          }
-          if (badgeWin) badgeWin.hidden = false;
-          if (dlMacBtn) {
-            dlMacBtn.classList.remove("btn-primary");
-            dlMacBtn.classList.add("btn-ghost");
-          }
-          if (badgeMac) badgeMac.hidden = true;
         }
 
         // Check URL parameters for license key (if passed by Dodo Payments redirect)
