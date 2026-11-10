@@ -1,0 +1,15 @@
+KLANG Website - Proprietary License
+
+Copyright (c) 2026 VIGAM Labs, Bengaluru, Karnataka, India.
+All rights reserved.
+
+The content of this repository (website code, text, design, images, logos,
+the KLANG name and branding, and the documents in legal/) is the proprietary
+property of VIGAM Labs. No part of it may be copied, modified, republished,
+or distributed without the prior written permission of VIGAM Labs.
+
+Third-party files keep their own licenses. In particular, gsap.min.js and
+ScrollTrigger.min.js are Copyright GreenSock and are used under the terms at
+https://gsap.com/standard-license.
+
+THE CONTENT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
